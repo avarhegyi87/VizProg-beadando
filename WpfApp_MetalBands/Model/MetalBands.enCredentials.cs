@@ -18,21 +18,18 @@ using System.Linq.Expressions;
 
 namespace enMetalBands
 {
-    public partial class enMusician {
+    internal partial class enCredentials {
 
-        public enMusician()
+        public enCredentials()
         {
-            this.enBandMembers = new List<enBandMembers>();
             OnCreated();
         }
 
-        public virtual int Musician_id { get; set; }
+        public virtual int UserId { get; set; }
 
-        public virtual string First_name { get; set; }
+        public virtual string UserName { get; set; }
 
-        public virtual string Last_name { get; set; }
-
-        public virtual IList<enBandMembers> enBandMembers { get; set; }
+        public virtual string Password { get; set; }
 
         #region Extensibility Method Definitions
 

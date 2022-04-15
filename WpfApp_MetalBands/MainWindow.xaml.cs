@@ -12,14 +12,43 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using enMetalBands;
 
 namespace WpfApp_MetalBands {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
+        enMetalBands.cnMetalBands context;
+
         public MainWindow() {
             InitializeComponent();
+            context = new enMetalBands.cnMetalBands();
+        }
+
+        private void btTest_Click(object sender, RoutedEventArgs e) {
+            try {
+                var myBand = new enMetalBand {
+                    Band_name = "Soen",
+                    Date_founding = 2004,
+                    Genre_name = Genres.progressive_metal
+                };
+                context.enMetalBands.Add(myBand);
+                context.SaveChanges();
+            }
+            catch (Exception ex) {
+
+                throw;
+            }
+            
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e) {
+            var result = (from x in context.enMetalBands
+                          select new {x.Band_name, 
+                              x.Genre_name, 
+                              x.Date_founding}).ToList();
+            dgDataGrid.ItemsSource = result;
         }
     }
 }
