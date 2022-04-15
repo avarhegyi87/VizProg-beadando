@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<efcore namespace="enMetalBands" p1:name="cnMetalBands" p1:Guid="9878f18f-c6fd-432b-83fc-86295da28f62" xmlns:p1="http://devart.com/schemas/EntityDeveloper/1.0">
+  <class name="$EnumTypes">
+    <EnumType Name="Genres" class="Genres" p1:Guid="ae71e2a1-ad21-4b83-be97-2c7ff0472475">
+      <Member Name="alternative_metal" p1:Guid="bb3eb343-fdea-4454-97f3-361333973535" />
+      <Member Name="avantgarde_metal" p1:Guid="68c0dc0f-d36f-45ec-a160-bd5d908ae774" />
+      <Member Name="black_metal" p1:Guid="a56c6f1d-af14-47c5-a4fa-ab62fd3b42e1" />
+      <Member Name="death_metal" p1:Guid="afeb1193-8d61-4779-979c-08da3bcf9adb" />
+      <Member Name="djent" p1:Guid="7f44ac55-9f01-4515-85a2-3245ea608e4e" />
+      <Member Name="doom_metal" p1:Guid="e03624db-fbe6-4b38-b57f-df97086cbd7b" />
+      <Member Name="folk_metal" p1:Guid="8ca3e45d-ee54-4721-8e0a-649fa3e4162d" />
+      <Member Name="gothic_metal" p1:Guid="55083ddf-5ed3-4265-8246-eff6741f956c" />
+      <Member Name="hardcore" p1:Guid="f7eb2a3f-6782-46e8-bf18-157d51902478" />
+      <Member Name="heavy_metal" p1:Guid="3b113c03-5cbc-4029-91e6-7ef2edcf579a" />
+      <Member Name="industrial_metal" p1:Guid="e1dcbe52-91e1-4a16-9c85-19d53a4157ea" />
+      <Member Name="metalgaze" p1:Guid="3b18df3b-df42-4513-96b3-eb741e95311b" />
+      <Member Name="post_metal" p1:Guid="29b3bdc4-86f2-4654-977f-590db313b04d" />
+      <Member Name="power_metal" p1:Guid="5bb63dd5-390c-4393-a715-8e5a5adc6ea3" />
+      <Member Name="progressive_metal" p1:Guid="414308a7-3218-4607-b673-252039d8aba0" />
+      <Member Name="sludge_metal" p1:Guid="4915efac-b08c-47cf-8775-d77a474a5479" />
+      <Member Name="symphonic_metal" p1:Guid="b372afa0-e81c-47e1-965a-b3a93f938636" />
+      <Member Name="thrash_metal" p1:Guid="5a812809-26be-41eb-9de3-38aefd73a334" />
+    </EnumType>
+  </class>
+  <class name="enMetalBand" entity-set="enMetalBands" table="MetalBands" p1:Guid="42086fc8-aea2-4ebe-8cc8-56109a9eba25">
+    <id name="Band_id" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="710d7a23-133a-4b62-87ea-9f06672f24cb">
+      <column name="band_id" />
+    </id>
+    <property name="Band_name" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="27772a89-5b43-44fb-90c9-cf954282c950">
+      <column name="band_name" length="50" />
+    </property>
+    <property name="Date_founding" type="Date" p1:ValidateRequired="true" p1:Guid="1464caa6-eafa-426f-8588-21cfe51107f6">
+      <column name="date_founding" />
+    </property>
+    <property name="Genre_name" type="enMetalBands.Genres" p1:ValidateRequired="true" p1:Guid="008c3632-d741-492c-a4ad-c85042a8cdfb">
+      <column name="genre_name" />
+    </property>
+  </class>
+  <class name="enAlbum" entity-set="enAlbums" table="Albums" p1:Guid="e81c6164-fd51-496c-a704-e1361e9a1e5e">
+    <id name="Album_id" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="a8a26e78-c9db-4d24-8e16-4ce93f0a1f5a">
+      <column name="album_id" />
+    </id>
+    <property name="Band_id" type="Int32" p1:ValidateRequired="true" p1:Guid="695f6bf8-03aa-4e33-91ca-4d099840b516">
+      <column name="band_id" />
+    </property>
+    <property name="Date_of_release" type="Date" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="38d13a16-5eca-4ffb-8f9c-d4bee9bf0cdd">
+      <column name="date_of_release" />
+    </property>
+    <property name="Album_rating" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="07c4111d-8cf8-4e1d-8232-80e7de336d22">
+      <column name="album_rating" precision="2" scale="1" />
+    </property>
+  </class>
+  <class name="enMusician" entity-set="enMusicians" table="Musicians" p1:Guid="2d2e7a25-0abc-469e-8240-e1a1e333f685">
+    <id name="Musician_id" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="8f51f6f8-c948-425a-bb6b-dc1648db3760">
+      <column name="musician_id" />
+    </id>
+    <property name="First_name" type="String" p1:ValidateMaxLength="30" p1:ValidateRequired="true" p1:Guid="9ae41ca2-84a7-46b7-a526-606b899f5908">
+      <column name="first_name" length="30" />
+    </property>
+    <property name="Last_name" type="String" p1:ValidateMaxLength="30" p1:ValidateRequired="true" p1:Guid="00b5acd4-1167-4806-80a7-fc3a123a6849">
+      <column name="last_name" length="30" />
+    </property>
+  </class>
+  <class name="enBandMembers" entity-set="enBandMembers" table="BandMembers" p1:Guid="4a862f84-50c2-4cd9-a4bb-b02ae6600094">
+    <composite-id>
+      <key-property name="Band_id" type="Int32" p1:ValidateRequired="true" p1:Guid="87b5853c-5879-4d3a-8a28-a9b90110cc95">
+        <column name="band_id" />
+      </key-property>
+      <key-property name="Musician_id" type="Int32" p1:ValidateRequired="true" p1:Guid="5a6dd410-b11e-4e13-80d8-ac3ad38b1131">
+        <column name="musician_id" />
+      </key-property>
+    </composite-id>
+    <property name="Instrument" type="String" p1:ValidateMaxLength="25" p1:ValidateRequired="true" p1:Guid="b8b5211a-c24d-4a04-b122-84bf5af6d135">
+      <column name="instrument" length="25" />
+    </property>
+  </class>
+  <associations>
+    <association name="enMusician_enBandMembers" cardinality="OneToMany" p1:Guid="fbd34d7e-ffc4-4948-a20b-bc4117d3a7f8">
+      <end1 multiplicity="One" name="enMusician" class="enBandMembers" relation-class="enMusician" constrained="True" lazy="False" p1:Guid="11288626-51d8-4347-b992-2317c2384499">
+        <property name="Musician_id" />
+      </end1>
+      <end2 multiplicity="Many" name="enBandMembers" class="enMusician" relation-class="enBandMembers" lazy="False" p1:Guid="130ff629-cb94-42d1-92b2-23f6782ce797">
+        <property name="Musician_id" />
+      </end2>
+    </association>
+    <association name="enMetalBand_enBandMembers" cardinality="OneToMany" p1:Guid="4a8ebcb0-668a-434d-ae89-f3d9f63e3f82">
+      <end1 multiplicity="One" name="enMetalBand" class="enBandMembers" relation-class="enMetalBand" constrained="True" lazy="False" p1:Guid="b2c3b8a4-51ec-432c-ad26-c2cf956418b9">
+        <property name="Band_id" />
+      </end1>
+      <end2 multiplicity="Many" name="enBandMembers" class="enMetalBand" relation-class="enBandMembers" lazy="False" p1:Guid="3fed603e-5409-4074-bfe5-100784b4fb5d">
+        <property name="Band_id" />
+      </end2>
+    </association>
+    <association name="enMetalBand_enAlbum" cardinality="OneToMany" p1:Guid="95acd883-1952-4df9-9962-40e91a9c8a9a">
+      <end1 multiplicity="One" name="enMetalBand" class="enAlbum" relation-class="enMetalBand" constrained="True" lazy="False" p1:Guid="e6b3bac9-8fee-404a-9704-1eebdceea33d">
+        <property name="Band_id" />
+      </end1>
+      <end2 multiplicity="Many" name="enAlbums" class="enMetalBand" relation-class="enAlbum" lazy="False" p1:Guid="686796e1-c28e-47da-92dd-e5c9b801fee3">
+        <property name="Band_id" />
+      </end2>
+    </association>
+  </associations>
+</efcore>
