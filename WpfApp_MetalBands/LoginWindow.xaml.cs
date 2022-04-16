@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,6 +27,57 @@ namespace WpfApp_MetalBands {
 
         private void btOK_Click(object sender, RoutedEventArgs e) {
             DialogResult = true;
+        }
+    }
+
+    public sealed class HashingOptions {
+        public int Iterations { get; set; } = 10000;
+    }
+
+    public sealed class PasswordHasher : IPasswordHasher {
+        private const int SALTSIZE = 16;
+        private const int KEYSIZE = 32;
+
+        public PasswordHasher(IOptions<HashingOptions> options) {
+            Options = options.Value;
+        }
+
+        private HashingOptions Options { get; }
+
+        public string Hash(string password) {
+            using (var algorithm = new Rfc2898DeriveBytes(
+                password, SALTSIZE, Options.Iterations, HashAlgorithmName.SHA256)) {
+                var key = Convert.ToBase64String(algorithm.GetBytes(KEYSIZE));
+                var salt = Convert.ToBase64String(algorithm.GetBytes(SALTSIZE));
+
+                return $"{Options.Iterations}.{salt}.{key}";
+            }
+        }
+
+        public (bool Verified, bool NeedsUpgrade) Check(string hash, string password) {
+            var parts = hash.Split('.', 3);
+
+            if (parts.Length != 3) {
+                throw new FormatException("Unexpected hash format. " +
+                    "Should be formatted as `{iterations}.{salt}.{hash}`");
+            }
+
+            var iterations = Convert.ToInt32(parts[0]);
+            var salt = Convert.FromBase64String(parts[1]);
+            var key = Convert.FromBase64String(parts[2]);
+
+            var needsUpgrade = iterations != Options.Iterations;
+
+            using (var algorithm = new Rfc2898DeriveBytes(
+                password, salt, iterations, HashAlgorithmName.SHA256)) {
+                {
+                    var keyToCheck = algorithm.GetBytes(KEYSIZE);
+                    var verified = keyToCheck.SequenceEqual(key);
+
+                    return (verified, needsUpgrade);
+                }
+
+            }
         }
     }
 }
