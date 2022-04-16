@@ -23,7 +23,18 @@ namespace WpfApp_MetalBands {
 
         public MainWindow() {
             InitializeComponent();
-            context = new enMetalBands.cnMetalBands();
+            var wndLogin = new LoginWindow();
+            var auth = wndLogin.ShowDialog();
+            if (auth == true) {
+                if (wndLogin.UserName == "Adam" && wndLogin.Password == "jelszo") {
+                    context = new enMetalBands.cnMetalBands();
+                    return;
+                }
+                MessageBox.Show("Wrong login credentials.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Application.Current.Shutdown();
+            } else {
+                Application.Current.Shutdown();
+            }
         }
 
         private void btTest_Click(object sender, RoutedEventArgs e) {

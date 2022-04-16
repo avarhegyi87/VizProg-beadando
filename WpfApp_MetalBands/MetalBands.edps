@@ -9,6 +9,7 @@
         <File Name="MetalBands.enAlbum.cs" DestinationFolder="C:\Users\maste\source\repos\VizProg_beadando_WPF\WpfApp_MetalBands\Model" />
         <File Name="MetalBands.enMusician.cs" DestinationFolder="C:\Users\maste\source\repos\VizProg_beadando_WPF\WpfApp_MetalBands\Model" />
         <File Name="MetalBands.enBandMembers.cs" DestinationFolder="C:\Users\maste\source\repos\VizProg_beadando_WPF\WpfApp_MetalBands\Model" />
+        <File Name="MetalBands.enCredentials.cs" DestinationFolder="C:\Users\maste\source\repos\VizProg_beadando_WPF\WpfApp_MetalBands\Model" />
         <File Name="MetalBands.Genres.cs" DestinationFolder="C:\Users\maste\source\repos\VizProg_beadando_WPF\WpfApp_MetalBands\Enum" />
       </GeneratedFiles>
     </Generation>

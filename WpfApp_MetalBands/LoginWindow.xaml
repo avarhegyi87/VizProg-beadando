@@ -1,0 +1,28 @@
+﻿<Window x:Class="WpfApp_MetalBands.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp_MetalBands"
+        mc:Ignorable="d"
+        Title="Log in" Height="200" Width="300">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70"></ColumnDefinition>
+            <ColumnDefinition Width="170"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Target="{Binding ElementName=tbName}" VerticalAlignment="Center" FontSize="12" Grid.Row="0" Grid.Column="0" Content="_Name"></Label>
+        <TextBox Grid.Row="0" Grid.Column="1" x:Name="tbName" Height="25" Width="150" VerticalAlignment="Center"></TextBox>
+        <Label Target="{Binding ElementName=pbPassword}" VerticalAlignment="Center" FontSize="12" Grid.Row="1" Grid.Column="0" Content="_Password"></Label>
+        <PasswordBox Grid.Row="1" Grid.Column="1" x:Name="pbPassword" Height="25" Width="150" VerticalAlignment="Center" PasswordChar="*"></PasswordBox>
+        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">
+            <Button x:Name="btOK" VerticalAlignment="Center" Width="60" Content="_OK" IsDefault="True" Click="btOK_Click"></Button>
+            <Button x:Name="btCancel" Margin="20,0,0,0" VerticalAlignment="Center" Width="60" Content="_Cancel" IsCancel="True"></Button>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -29,7 +29,7 @@
     <property name="Band_name" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="27772a89-5b43-44fb-90c9-cf954282c950">
       <column name="band_name" length="50" />
     </property>
-    <property name="Date_founding" type="Date" p1:ValidateRequired="true" p1:Guid="1464caa6-eafa-426f-8588-21cfe51107f6">
+    <property name="Date_founding" type="Int32" p1:ValidateRequired="true" p1:Guid="1464caa6-eafa-426f-8588-21cfe51107f6">
       <column name="date_founding" />
     </property>
     <property name="Genre_name" type="enMetalBands.Genres" p1:ValidateRequired="true" p1:Guid="008c3632-d741-492c-a4ad-c85042a8cdfb">
@@ -72,6 +72,17 @@
     </composite-id>
     <property name="Instrument" type="String" p1:ValidateMaxLength="25" p1:ValidateRequired="true" p1:Guid="b8b5211a-c24d-4a04-b122-84bf5af6d135">
       <column name="instrument" length="25" />
+    </property>
+  </class>
+  <class name="enCredentials" entity-set="enCredentials" table="Credentials" p1:modifier="Internal" p1:Guid="29af3c87-77db-45fc-92fd-651906d2b3c6">
+    <id name="UserId" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="6a516b02-82b4-4a55-8d48-4628a8ee6697">
+      <column name="user_id" />
+    </id>
+    <property name="UserName" type="String" p1:ValidateMaxLength="25" p1:ValidateRequired="true" p1:Guid="bdc154f2-e2c1-4514-9448-f19012b4aec3">
+      <column name="user_name" length="25" unique="True" />
+    </property>
+    <property name="Password" type="String" p1:ValidateMaxLength="255" p1:ValidateRequired="true" p1:Guid="0f4fbe53-cff7-4333-92fb-c5afc07d3683">
+      <column name="password" length="255" />
     </property>
   </class>
   <associations>

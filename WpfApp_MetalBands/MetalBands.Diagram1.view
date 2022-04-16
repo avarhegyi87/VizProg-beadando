@@ -163,7 +163,7 @@
               </Model>
             </Children>
             <Location>
-              <X>176 px</X>
+              <X>264 px</X>
               <Y>216 px</Y>
             </Location>
             <Size>
@@ -551,7 +551,7 @@
               </Model>
             </Children>
             <Location>
-              <X>616 px</X>
+              <X>704 px</X>
               <Y>0 px</Y>
             </Location>
             <Size>
@@ -709,7 +709,7 @@
               </Model>
             </Children>
             <Location>
-              <X>424 px</X>
+              <X>512 px</X>
               <Y>216 px</Y>
             </Location>
             <Size>
@@ -848,7 +848,7 @@
               </Model>
             </Children>
             <Location>
-              <X>176 px</X>
+              <X>264 px</X>
               <Y>8 px</Y>
             </Location>
             <Size>
@@ -1006,7 +1006,7 @@
               </Model>
             </Children>
             <Location>
-              <X>424 px</X>
+              <X>512 px</X>
               <Y>16 px</Y>
             </Location>
             <Size>
@@ -1106,15 +1106,15 @@
             </PortAnchors>
             <BendPoints>
               <PointD>
-                <X>251 px</X>
+                <X>339 px</X>
                 <Y>196 px</Y>
               </PointD>
               <PointD>
-                <X>396 px</X>
+                <X>484 px</X>
                 <Y>196 px</Y>
               </PointD>
               <PointD>
-                <X>396 px</X>
+                <X>484 px</X>
                 <Y>134.5 px</Y>
               </PointD>
             </BendPoints>
@@ -1165,14 +1165,137 @@
               <TypeName>EntityDeveloper.EntityFrameworkCore.EntityAssociation</TypeName>
             </Oid>
           </Model>
+          <Model xsi:type="ClassVwModel">
+            <CustomProperties>
+              <OID>62</OID>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Children>
+              <Model xsi:type="PropertiesVwModel">
+                <CustomProperties>
+                  <OID>63</OID>
+                  <Parent>62</Parent>
+                </CustomProperties>
+                <Children>
+                  <Model xsi:type="PropertyVwModel">
+                    <CustomProperties>
+                      <OID>64</OID>
+                      <Parent>63</Parent>
+                    </CustomProperties>
+                    <Children />
+                    <Location>
+                      <X>0.5 px</X>
+                      <Y>0.5 px</Y>
+                    </Location>
+                    <Size>
+                      <Width>144 px</Width>
+                      <Height>18 px</Height>
+                    </Size>
+                    <Oid xsi:type="SchemaModelOID">
+                      <Path>6a516b02-82b4-4a55-8d48-4628a8ee6697</Path>
+                      <TypeName>EntityDeveloper.EntityFrameworkCore.EntityProperty</TypeName>
+                    </Oid>
+                  </Model>
+                  <Model xsi:type="PropertyVwModel">
+                    <CustomProperties>
+                      <OID>65</OID>
+                      <Parent>63</Parent>
+                    </CustomProperties>
+                    <Children />
+                    <Location>
+                      <X>0.5 px</X>
+                      <Y>18.5 px</Y>
+                    </Location>
+                    <Size>
+                      <Width>144 px</Width>
+                      <Height>18 px</Height>
+                    </Size>
+                    <Oid xsi:type="SchemaModelOID">
+                      <Path>bdc154f2-e2c1-4514-9448-f19012b4aec3</Path>
+                      <TypeName>EntityDeveloper.EntityFrameworkCore.EntityProperty</TypeName>
+                    </Oid>
+                  </Model>
+                  <Model xsi:type="PropertyVwModel">
+                    <CustomProperties>
+                      <OID>66</OID>
+                      <Parent>63</Parent>
+                    </CustomProperties>
+                    <Children />
+                    <Location>
+                      <X>0.5 px</X>
+                      <Y>36.5 px</Y>
+                    </Location>
+                    <Size>
+                      <Width>144 px</Width>
+                      <Height>18 px</Height>
+                    </Size>
+                    <Oid xsi:type="SchemaModelOID">
+                      <Path>0f4fbe53-cff7-4333-92fb-c5afc07d3683</Path>
+                      <TypeName>EntityDeveloper.EntityFrameworkCore.EntityProperty</TypeName>
+                    </Oid>
+                  </Model>
+                </Children>
+                <Size>
+                  <Width>145 px</Width>
+                  <Height>55 px</Height>
+                </Size>
+                <MaxSize>
+                  <Width>0 px</Width>
+                  <Height>55 px</Height>
+                </MaxSize>
+              </Model>
+              <Model xsi:type="RelationPropertiesVwModel">
+                <CustomProperties>
+                  <OID>67</OID>
+                  <Parent>62</Parent>
+                </CustomProperties>
+                <Children />
+                <Location>
+                  <X>0 px</X>
+                  <Y>54 px</Y>
+                </Location>
+                <Size>
+                  <Width>145 px</Width>
+                  <Height>19 px</Height>
+                </Size>
+                <MaxSize>
+                  <Width>0 px</Width>
+                  <Height>19 px</Height>
+                </MaxSize>
+                <Hidden>false</Hidden>
+              </Model>
+            </Children>
+            <Location>
+              <X>48 px</X>
+              <Y>136 px</Y>
+            </Location>
+            <Size>
+              <Width>150 px</Width>
+              <Height>122 px</Height>
+            </Size>
+            <MinSize>
+              <Width>100 px</Width>
+              <Height>122 px</Height>
+            </MinSize>
+            <MaxSize>
+              <Width>800 px</Width>
+              <Height>122 px</Height>
+            </MaxSize>
+            <Ports />
+            <Oid xsi:type="SchemaModelOID">
+              <Path>29af3c87-77db-45fc-92fd-651906d2b3c6</Path>
+              <TypeName>EntityDeveloper.EntityFrameworkCore.EntityClass</TypeName>
+            </Oid>
+            <FixedHeight>22 px</FixedHeight>
+          </Model>
         </Children>
         <GridSize>8 px</GridSize>
         <ViewPort>
           <ScaleMode>Free</ScaleMode>
           <Scale>0.965938</Scale>
           <Location>
-            <X>-25.2561067990657 px</X>
-            <Y>-30.4017530086624 px</Y>
+            <X>-24.8463159063913 px</X>
+            <Y>-24.8463159063913 px</Y>
           </Location>
         </ViewPort>
         <Oid xsi:type="SchemaModelOID">
