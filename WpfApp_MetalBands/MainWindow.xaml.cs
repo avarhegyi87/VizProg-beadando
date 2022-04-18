@@ -59,7 +59,7 @@ namespace WpfApp_MetalBands {
                           select new {x.Band_name, 
                               x.Genre_name, 
                               x.Date_founding}).ToList();
-            dgDataGrid.ItemsSource = result;
+            dgBands.ItemsSource = result;
         }
     }
 }

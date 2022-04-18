@@ -6,11 +6,41 @@
         xmlns:local="clr-namespace:WpfApp_MetalBands"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
-    <Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Exit"/>
+            </MenuItem>
+            <MenuItem Header="Query">
+                <MenuItem Header="List bands"/>
+                <MenuItem Header="List band members"/>
+                <MenuItem Header="List albums"/>
+            </MenuItem>
+            <MenuItem Header="Update tables">
+                <MenuItem Header="Find Band"/>
+                <MenuItem Header="Find Musician"/>
+                <MenuItem Header="Find Band Member"/>
+            </MenuItem>
+        </Menu>
         <ToolBar Height="34" DockPanel.Dock="Top">
             <Button Content="Add band"/>
-            <Button></Button>
+            <Button Content="Add album"/>
+            <Button Content="Add band member"/>
+            <Button>
+                <Image Source="/Icons/DeleteTableRow.png"/>
+            </Button>
+            <Button>
+                <Image Source="/Icons/UpdateListItem.png"/>
+            </Button>
         </ToolBar>
-        <DataGrid x:Name="dgDataGrid" ItemsSource="{Binding}"/>
-    </Grid>
+
+        <DataGrid x:Name="dgBands" ItemsSource="{Binding}" Visibility="Collapsed" 
+                  HorizontalAlignment="Stretch" DockPanel.Dock="Top" 
+                  IsReadOnly="False" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Band" Binding="{Binding BandName}"/>
+                <DataGridTextColumn Header="Genre" Binding="{Binding Genre}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
 </Window>

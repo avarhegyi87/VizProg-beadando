@@ -43,11 +43,14 @@
     <property name="Band_id" type="Int32" p1:ValidateRequired="true" p1:Guid="695f6bf8-03aa-4e33-91ca-4d099840b516">
       <column name="band_id" />
     </property>
-    <property name="Date_of_release" type="Date" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="38d13a16-5eca-4ffb-8f9c-d4bee9bf0cdd">
-      <column name="date_of_release" />
+    <property name="Release_Year" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="38d13a16-5eca-4ffb-8f9c-d4bee9bf0cdd">
+      <column name="release_year" length="4" />
     </property>
     <property name="Album_rating" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="07c4111d-8cf8-4e1d-8232-80e7de336d22">
       <column name="album_rating" precision="2" scale="1" />
+    </property>
+    <property name="Album_title" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="9cab2fb5-87e8-489b-9980-1067ee05cbf9">
+      <column name="album_title" length="50" />
     </property>
   </class>
   <class name="enMusician" entity-set="enMusicians" table="Musicians" p1:Guid="2d2e7a25-0abc-469e-8240-e1a1e333f685">
@@ -74,7 +77,7 @@
       <column name="instrument" length="25" />
     </property>
   </class>
-  <class name="enCredentials" entity-set="enCredentials" table="Credentials" p1:modifier="Internal" p1:Guid="29af3c87-77db-45fc-92fd-651906d2b3c6">
+  <class name="enUsers" entity-set="enUsers" table="Credentials" p1:modifier="Internal" p1:Guid="29af3c87-77db-45fc-92fd-651906d2b3c6">
     <id name="UserId" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="6a516b02-82b4-4a55-8d48-4628a8ee6697">
       <column name="user_id" />
     </id>
