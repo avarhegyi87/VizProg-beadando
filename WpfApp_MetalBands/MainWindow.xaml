@@ -4,24 +4,27 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp_MetalBands"
+
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
+
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Exit"/>
+                <MenuItem Header="Exit" Name="miExit" Click="miExit_Click"/>
             </MenuItem>
             <MenuItem Header="Query">
-                <MenuItem Header="List bands"/>
-                <MenuItem Header="List band members"/>
-                <MenuItem Header="List albums"/>
+                <MenuItem Header="List bands" Name="miListBands" Click="miListBands_Click"/>
+                <MenuItem Header="List band members" Name="miListMusicians" Click="miListMusicians_Click"/>
+                <MenuItem Header="List albums" Name="miListAlbums" Click="miListAlbums_Click"/>
             </MenuItem>
             <MenuItem Header="Update tables">
-                <MenuItem Header="Find Band"/>
-                <MenuItem Header="Find Musician"/>
-                <MenuItem Header="Find Band Member"/>
+                <MenuItem Header="Add/Update Band" Name="miUpdBand" Click="miUpdBand_Click"/>
+                <MenuItem Header="Add/Update Musician" Name="miUpdMusician" Click="miUpdMusician_Click"/>
+                <MenuItem Header="Add/Update Album" Name="miUpdtAlbum" Click="miUpdtAlbum_Click"/>
             </MenuItem>
         </Menu>
+        
         <ToolBar Height="34" DockPanel.Dock="Top">
             <Button Content="Add band"/>
             <Button Content="Add album"/>
@@ -34,13 +37,84 @@
             </Button>
         </ToolBar>
 
-        <DataGrid x:Name="dgBands" ItemsSource="{Binding}" Visibility="Collapsed" 
-                  HorizontalAlignment="Stretch" DockPanel.Dock="Top" 
-                  IsReadOnly="False" AutoGenerateColumns="False">
+        <DataGrid x:Name="dgBands" ItemsSource="{Binding}" Visibility="Collapsed" HorizontalAlignment="Stretch" 
+                  DockPanel.Dock="Top" IsReadOnly="False" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Band" Binding="{Binding BandName}"/>
-                <DataGridTextColumn Header="Genre" Binding="{Binding Genre}"/>
+                <DataGridTextColumn Header="Band" Binding="{Binding Band_name}"/>
+                <DataGridTextColumn Header="Genre" Binding="{Binding GenreName}"/>
+                <DataGridTextColumn Header="Founded In" Binding="{Binding Date_founding}"/>
+                <DataGridTextColumn Header="No of Albums" Binding="{Binding NoOfAlbums}"/>
+                <DataGridTextColumn Header="Avg Album Rating" Binding="{Binding AvgRating}"/>
+                <DataGridTextColumn Header="No of Band Members" Binding="{Binding NoOfBandMembers}"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <DataGrid x:Name="dgAlbums" ItemsSource="{Binding}" Visibility="Collapsed" HorizontalAlignment="Stretch"
+                  DockPanel.Dock="Top" IsReadOnly="False" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Album Title" Binding="{Binding Album_title}"/>
+                <DataGridTextColumn Header="Artist" Binding="{Binding ArtistName}"/>
+                <DataGridTextColumn Header="Released In" Binding="{Binding Release_Year}"/>
+                <DataGridTextColumn Header="Rating" Binding="{Binding Album_rating}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <DataGrid x:Name="dgMusicians" ItemsSource="{Binding}" Visibility="Collapsed" HorizontalAlignment="Stretch"
+                  DockPanel.Dock="Top" IsReadOnly="False" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Musician Name" Binding="{Binding FullName}"/>
+                <DataGridTextColumn Header="Bands" Binding="{Binding PlayingInBands}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <DataGrid x:Name="dgAll" ItemsSource="{Binding}" Visibility="Collapsed" HorizontalAlignment="Stretch"
+                  DockPanel.Dock="Top" IsReadOnly="False" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Band" Binding="{Binding Band_name}"/>
+                <DataGridTextColumn Header="Genre" Binding="{Binding Genre}"/>
+                <DataGridTextColumn Header="Date of founding" Binding="{Binding DateFounding}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Grid x:Name="grBand" Visibility="Collapsed" Margin="0,10,0,0" DataContext="{Binding}">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="Search by name" Grid.Row="0" Grid.Column="0"/>
+            <ComboBox x:Name="cbBandName" ItemsSource="{Binding}" DisplayMemberPath="Band_name"
+                      Grid.Row="0" Grid.Column="1" Height="25" Width="250" 
+                      HorizontalAlignment="Left" VerticalAlignment="Top"
+                      IsSynchronizedWithCurrentItem="True" SelectionChanged="cbBandName_SelectionChanged"/>
+
+            <Label Content="Band name" Grid.Row="1" Grid.Column="0"/>
+            <TextBox x:Name="tbBandName" Grid.Row="1" Grid.Column="1" Height="25" Width="250"
+                     HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+            <Label Content="Genre" Grid.Row="2" Grid.Column="0"/>
+            <ComboBox x:Name="cbGenre" ItemsSource="{Binding}" DisplayMemberPath="GenreName"
+                      Grid.Row="2" Grid.Column="1" Height="25" Width="250"
+                      HorizontalAlignment="Left" VerticalAlignment="Top"
+                      IsSynchronizedWithCurrentItem="True"/>
+
+            <Label Content="Year of founding" Grid.Row="3" Grid.Column="0"/>
+            <TextBox x:Name="tbYoF" Grid.Row="3" Grid.Column="1" Height="25" Width="50"
+                     HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+            <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="17,0,0,0">
+                <Button x:Name="btSaveBand" Content="Save" Margin="0,0,20,0" Width="80" Height="35" Click="btSaveBand_Click"/>
+                <Button x:Name="btSaveAsNewBand" Content="Save as new" Margin="20,0,20,0" Width="120" Height="35" Click="btSaveAsNewBand_Click"/>
+                <Button x:Name="btBack" Content="Back" Margin="20,0,0,0" Width="80" Height="35" Click="btBack_Click"/>
+            </StackPanel>
+        </Grid>
     </DockPanel>
 </Window>

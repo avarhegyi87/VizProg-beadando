@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="enMetalBands.cnMetalBands" Collapsed="true">
+    <Position X="5.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BBAAEEAAARAAAMBAAIAAIAQAECAFAIAAAAAAIAAABAA=</HashCode>
+      <FileName>Context\MetalBands.cnMetalBands.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="enMetalBands.enAlbum" Collapsed="true">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AkAAAAAAAAAAAAAAAAAAAAAAAiAAAAAAAAEEAAAgAAA=</HashCode>
+      <FileName>Model\MetalBands.enAlbum.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="enMetalBands.enMetalBand" Collapsed="true">
+    <Position X="9" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAgAAAAAAAEAAAAAEAAAAAAACAAAAAAAIAACACAIQA=</HashCode>
+      <FileName>Model\MetalBands.enMetalBand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="enMetalBands.enMusician" Collapsed="true">
+    <Position X="3.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAQAEAAAAAACAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Model\MetalBands.enMusician.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="enMetalBands.enUsers" Collapsed="true">
+    <Position X="5.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAACAAAAACAQAAAAAAAAA=</HashCode>
+      <FileName>Model\MetalBands.enUsers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WpfApp_MetalBands.App" Collapsed="true">
+    <Position X="3.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WpfApp_MetalBands.LoginWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAQAEAAAAAAA=</HashCode>
+      <FileName>LoginWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WpfApp_MetalBands.HashingOptions" Collapsed="true">
+    <Position X="7.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LoginWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WpfApp_MetalBands.PasswordHasher" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAhAAAIAAAAAAAAAACAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>LoginWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WpfApp_MetalBands.MainWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAKIAAAAIAAAAgCAARAAIgAAAAAAAAAIAAAAABgIAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="WpfApp_MetalBands.IPasswordHasher" Collapsed="true">
+    <Position X="3.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IPasswordHasher.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="enMetalBands.Genres" Collapsed="true">
+    <Position X="3.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IIQBAAAIgAAAAAAgBAAAAEAgQAEAAAAiABQAgAAAAAA=</HashCode>
+      <FileName>Enum\MetalBands.Genres.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
