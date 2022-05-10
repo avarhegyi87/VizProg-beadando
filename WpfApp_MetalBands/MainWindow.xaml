@@ -76,7 +76,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Grid x:Name="grBand" Visibility="Collapsed" Margin="0,10,0,0" DataContext="{Binding}">
+        <Grid x:Name="grBand" Visibility="Collapsed" Margin="0,10,0,0" DataContext="{Binding}" Loaded="grBand_Loaded">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -101,10 +101,10 @@
                      HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
             <Label Content="Genre" Grid.Row="2" Grid.Column="0"/>
-            <ComboBox x:Name="cbGenre" ItemsSource="{Binding}" DisplayMemberPath="GenreName"
+            <ComboBox x:Name="cbGenre" ItemsSource="{Binding}"
                       Grid.Row="2" Grid.Column="1" Height="25" Width="250"
                       HorizontalAlignment="Left" VerticalAlignment="Top"
-                      IsSynchronizedWithCurrentItem="True"/>
+                      DropDownOpened="cbGenre_DropDownOpened"/>
 
             <Label Content="Year of founding" Grid.Row="3" Grid.Column="0"/>
             <TextBox x:Name="tbYoF" Grid.Row="3" Grid.Column="1" Height="25" Width="50"

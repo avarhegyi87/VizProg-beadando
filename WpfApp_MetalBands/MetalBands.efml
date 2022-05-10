@@ -10,7 +10,7 @@
     <property name="Date_founding" type="Int32" p1:ValidateRequired="true" p1:Guid="1464caa6-eafa-426f-8588-21cfe51107f6">
       <column name="date_founding" />
     </property>
-    <property name="Genre_id" type="Int32" p1:ValidateRequired="true" p1:Guid="008c3632-d741-492c-a4ad-c85042a8cdfb">
+    <property name="Genre_id" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="008c3632-d741-492c-a4ad-c85042a8cdfb">
       <column name="genre_id" />
     </property>
   </class>
@@ -53,7 +53,7 @@
       <column name="password" length="255" />
     </property>
   </class>
-  <class name="enGenre" entity-set="enGenres" p1:Guid="4f4b18ac-4143-41b9-923b-faca6ae1cb88">
+  <class name="enGenre" entity-set="enGenres" table="Genres" p1:Guid="4f4b18ac-4143-41b9-923b-faca6ae1cb88">
     <id name="Genre_id" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="3cb37af5-4e54-4a8b-adf6-39e8b6550ec8">
       <column name="" />
     </id>
@@ -79,7 +79,7 @@
       </end2>
     </association>
     <association name="enGenre_enMetalBand" cardinality="OneToMany" p1:Guid="e0801930-b154-48c2-bc7f-bbbca413c68d">
-      <end1 multiplicity="One" name="Genres" class="enMetalBand" relation-class="enGenre" constrained="True" lazy="False" p1:Guid="3b4f8d33-c8a7-4fa7-a1f6-7a79f54658a4">
+      <end1 multiplicity="ZeroOrOne" name="Genres" class="enMetalBand" relation-class="enGenre" constrained="True" lazy="False" p1:Guid="3b4f8d33-c8a7-4fa7-a1f6-7a79f54658a4">
         <property name="Genre_id" />
       </end1>
       <end2 multiplicity="Many" name="MetalBand" class="enGenre" relation-class="enMetalBand" lazy="False" p1:Guid="5ea32707-a024-447b-b202-f7767c0d8cd7">
