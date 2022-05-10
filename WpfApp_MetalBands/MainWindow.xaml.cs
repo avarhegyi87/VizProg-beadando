@@ -161,6 +161,7 @@ namespace WpfApp_MetalBands {
                 var ds = (from x in context.enAlbums where x.Band_id == band.Band_id orderby x.Release_Year select x.Album_title).ToList();
                 blockHandlers = true;
                 cbAlbumTitle.ItemsSource = ds;
+                tbAlbumTitle.Text = "";
                 blockHandlers = false;
             }
         }
@@ -353,7 +354,7 @@ namespace WpfApp_MetalBands {
                 return;
             }
 
-            var band_id = context.enMetalBands.Where(x => x.Band_name == cbAlbumArtist.Text).Select(x => x.Band_id).FirstOrDefault();
+            var band_id = context.enMetalBands.Where(x => x.Band_name == tbArtist.Text).Select(x => x.Band_id).FirstOrDefault();
 
             if (band_id > 0) {
                 var new_album = new enAlbum {
@@ -372,19 +373,21 @@ namespace WpfApp_MetalBands {
         }
 
         private void btDeleteAlbum_Click(object sender, RoutedEventArgs e) {
-            if (cbAlbumTitle.SelectedItem is not enAlbum ma) {
+            var band_id = context.enMetalBands.Where(x => x.Band_name == cbAlbumArtist.Text).Select(x => x.Band_id).FirstOrDefault();
+            enAlbum album = (from x in context.enAlbums where x.Album_title == cbAlbumTitle.Text && x.Band_id == band_id select x).First();
+            if (album is null) {
                 MessageBox.Show("No such album in the database as " + cbAlbumTitle.Text,
                     "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             } else {
                 MessageBoxResult mares = MessageBox.Show("Are you sure you wish to delete the following album?\n" +
-                    ma.Album_title + " (" + ma.Release_Year + " by " + ma.ArtistName + ")",
+                    album.Album_title + " (" + album.Release_Year + " by " + album.ArtistName + ")",
                     "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (mares == MessageBoxResult.Yes) {
-                    context.enAlbums.Remove(ma);
+                    context.enAlbums.Remove(album);
                     context.SaveChanges();
                     MessageBox.Show("Album successfully deleted", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    miListBands_Click(sender, e);
+                    miListAlbums_Click(sender, e);
                 }
             }
         }

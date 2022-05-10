@@ -64,6 +64,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Musician Name" Binding="{Binding FullName}"/>
                 <DataGridTextColumn Header="Bands" Binding="{Binding PlayingInBands}"/>
+                <DataGridTextColumn Header="Instruments" Binding="{Binding Instrument}"/>
             </DataGrid.Columns>
         </DataGrid>
 
