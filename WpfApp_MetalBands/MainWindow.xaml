@@ -109,10 +109,10 @@
                      HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
             <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="17,0,0,0">
-                <Button x:Name="btSaveBand" Content="Save" Margin="0,0,20,0" Width="80" Height="35" Click="btSaveBand_Click"/>
-                <Button x:Name="btSaveAsNewBand" Content="Save As New" Margin="20,0,20,0" Width="120" Height="35" Click="btSaveAsNewBand_Click"/>
-                <Button x:Name="btDeleteBand" Content="Delete" Margin="20,0,20,0" Width="80" Height="35" Click="btDeleteBand_Click"/>
-                <Button x:Name="btNoAddBand" Content="Back" Margin="20,0,0,0" Width="80" Height="35" Click="btBack_Click"/>
+                <Button x:Name="btSaveBand" Content="_Save" Margin="0,0,20,0" Width="80" Height="35" Click="btSaveBand_Click"/>
+                <Button x:Name="btSaveAsNewBand" Content="Save As _New" Margin="20,0,20,0" Width="120" Height="35" Click="btSaveAsNewBand_Click"/>
+                <Button x:Name="btDeleteBand" Content="_Delete" Margin="20,0,20,0" Width="80" Height="35" Click="btDeleteBand_Click"/>
+                <Button x:Name="btNoAddBand" Content="_Back" Margin="20,0,0,0" Width="80" Height="35" Click="btBack_Click"/>
             </StackPanel>
         </Grid>
 
@@ -155,11 +155,22 @@
                      HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
             <StackPanel Grid.Row="4" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Left" Margin="17,0,0,0">
-                <Button x:Name="btSaveAlbum" Content="Save" Margin="0,0,20,0" Width="80" Height="35" Click="btSaveAlbum_Click"/>
-                <Button x:Name="btSaveAsNewAlbum" Content="Save As New" Margin="20,0,20,0" Width="120" Height="35" Click="btSaveAsNewAlbum_Click"/>
-                <Button x:Name="btDeleteAlbum" Content="Delete" Margin="20,0,20,0" Width="80" Height="35" Click="btDeleteAlbum_Click"/>
-                <Button x:Name="btNoAddAlbum" Content="Back" Margin="20,0,0,0" Width="80" Height="35" Click="btBack_Click"/>
+                <Button x:Name="btSaveAlbum" Content="_Save" Margin="0,0,20,0" Width="80" Height="35" Click="btSaveAlbum_Click"/>
+                <Button x:Name="btSaveAsNewAlbum" Content="Save As _New" Margin="20,0,20,0" Width="120" Height="35" Click="btSaveAsNewAlbum_Click"/>
+                <Button x:Name="btDeleteAlbum" Content="_Delete" Margin="20,0,20,0" Width="80" Height="35" Click="btDeleteAlbum_Click"/>
+                <Button x:Name="btNoAddAlbum" Content="_Back" Margin="20,0,0,0" Width="80" Height="35" Click="btBack_Click"/>
             </StackPanel>
         </Grid>
+
+        <DataGrid x:Name="dgMusicianEdit" ItemsSource="{Binding}" Visibility="Collapsed"
+                  HorizontalAlignment="Stretch" IsReadOnly="False" AutoGenerateColumns="False"
+                  BeginningEdit="dgMusicianEdit_BeginningEdit" CurrentCellChanged="dgMusicianEdit_CurrentCellChanged"
+                  CellEditEnding="dgMusicianEdit_CellEditEnding" RowEditEnding="dgMusicianEdit_RowEditEnding">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="First Name" Binding="{Binding First_name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Last Name" Binding="{Binding Last_name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Instruments" Binding="{Binding Instrument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </DockPanel>
 </Window>

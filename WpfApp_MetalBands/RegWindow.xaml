@@ -1,0 +1,33 @@
+﻿<Window x:Class="WpfApp_MetalBands.RegWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp_MetalBands"
+        mc:Ignorable="d"
+        Title="Register" Height="250" Width="300"
+        ShowInTaskbar="False" WindowStartupLocation="CenterOwner"
+        FocusManager.FocusedElement="{Binding ElementName=tbNewUserName}">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="170"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Label Target="{Binding ElementName=tbNewUserName}" VerticalAlignment="Center" FontSize="11" Grid.Row="0" Grid.Column="0" Content="_Username"/>
+        <TextBox x:Name="tbNewUserName" Grid.Row="0" Grid.Column="1" Height="25" Width="150" VerticalAlignment="Center"/>
+        <Label Target="{Binding ElementName=pbNewPassword}" VerticalAlignment="Center" FontSize="11" Grid.Row="1" Grid.Column="0" Content="_Password"/>
+        <PasswordBox x:Name="pbNewPassword" Grid.Row="1" Grid.Column="1" Height="25" Width="150" VerticalAlignment="Center" PasswordChar="*"/>
+        <Label Target="{Binding ElementName=pbConfirmPassword}" VerticalAlignment="Center" FontSize="11" Grid.Row="2" Grid.Column="0" Content="Confirm Password"/>
+        <PasswordBox x:Name="pbConfirmPassword" Grid.Row="2" Grid.Column="1" Height="25" Width="150" VerticalAlignment="Center" PasswordChar="*"/>
+        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">
+            <Button x:Name="btSendReg" VerticalAlignment="Center" Width="60" Content="_OK" IsDefault="True" Click="btSendReg_Click"/>
+            <Button x:Name="btCancelReg" Margin="20,0,0,0" VerticalAlignment="Center" Width="60" Content="_Cancel" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>

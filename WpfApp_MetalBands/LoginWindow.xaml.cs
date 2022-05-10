@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using enMetalBands;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,19 @@ namespace WpfApp_MetalBands {
 
         private void btOK_Click(object sender, RoutedEventArgs e) {
             DialogResult = true;
+        }
+
+        private void btRegister_Click(object sender, RoutedEventArgs e) {
+            var wndReg = new RegWindow();
+            var auth = wndReg.ShowDialog();
+            if (auth == true) {
+                //var opt = new HashingOptions();
+                //PasswordHasher hasher = new PasswordHasher();
+                //enUser user = new enUser {
+                //    UserName = wndReg.NewUserName,
+                    
+                //};
+            }
         }
     }
 

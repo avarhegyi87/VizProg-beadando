@@ -41,6 +41,9 @@
     <property name="Last_name" type="String" p1:ValidateMaxLength="30" p1:ValidateRequired="true" p1:Guid="00b5acd4-1167-4806-80a7-fc3a123a6849">
       <column name="last_name" length="30" />
     </property>
+    <property name="Instrument" type="String" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="ebf9dbcd-3553-4b1a-8633-08cf1c8aaaa7">
+      <column name="instrument" />
+    </property>
   </class>
   <class name="enUsers" entity-set="enUsers" table="Credentials" p1:modifier="Internal" p1:Guid="29af3c87-77db-45fc-92fd-651906d2b3c6">
     <id name="UserId" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="6a516b02-82b4-4a55-8d48-4628a8ee6697">

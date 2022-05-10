@@ -10,21 +10,25 @@
         FocusManager.FocusedElement="{Binding ElementName=tbName}">
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="70"></ColumnDefinition>
-            <ColumnDefinition Width="170"></ColumnDefinition>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="170"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"></RowDefinition>
-            <RowDefinition Height="50"></RowDefinition>
-            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Label Target="{Binding ElementName=tbName}" VerticalAlignment="Center" FontSize="12" Grid.Row="0" Grid.Column="0" Content="_Name"></Label>
-        <TextBox Grid.Row="0" Grid.Column="1" x:Name="tbName" Height="25" Width="150" VerticalAlignment="Center"></TextBox>
-        <Label Target="{Binding ElementName=pbPassword}" VerticalAlignment="Center" FontSize="12" Grid.Row="1" Grid.Column="0" Content="_Password"></Label>
-        <PasswordBox Grid.Row="1" Grid.Column="1" x:Name="pbPassword" Height="25" Width="150" VerticalAlignment="Center" PasswordChar="*"></PasswordBox>
+        <Label Target="{Binding ElementName=tbName}" VerticalAlignment="Center" FontSize="12" Grid.Row="0" Grid.Column="0" Content="_Name"/>
+        <TextBox Grid.Row="0" Grid.Column="1" x:Name="tbName" Height="25" Width="150" VerticalAlignment="Center"/>
+        <Label Target="{Binding ElementName=pbPassword}" VerticalAlignment="Center" FontSize="12" Grid.Row="1" Grid.Column="0" Content="_Password"/>
+        <PasswordBox Grid.Row="1" Grid.Column="1" x:Name="pbPassword" Height="25" Width="150" VerticalAlignment="Center" PasswordChar="*"/>
         <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">
-            <Button x:Name="btOK" VerticalAlignment="Center" Width="60" Content="_OK" IsDefault="True" Click="btOK_Click"></Button>
-            <Button x:Name="btCancel" Margin="20,0,0,0" VerticalAlignment="Center" Width="60" Content="_Cancel" IsCancel="True"></Button>
+            <Button x:Name="btOK" VerticalAlignment="Center" Width="60" Content="_OK" IsDefault="True" Click="btOK_Click"/>
+            <Button x:Name="btCancel" Margin="20,0,0,0" VerticalAlignment="Center" Width="60" Content="_Cancel" IsCancel="True"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">
+            <Button x:Name="btRegister" VerticalAlignment="Center" Width="60" Content="Register" Click="btRegister_Click"/>
         </StackPanel>
     </Grid>
 </Window>

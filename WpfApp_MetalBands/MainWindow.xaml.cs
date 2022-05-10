@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -85,6 +86,7 @@ namespace WpfApp_MetalBands {
             dgBands.Visibility = Visibility.Collapsed;
             dgAlbums.Visibility = Visibility.Collapsed;
             dgMusicians.Visibility = Visibility.Collapsed;
+            dgMusicianEdit.Visibility = Visibility.Collapsed;
             grBand.Visibility = Visibility.Collapsed;
             grAlbum.Visibility = Visibility.Collapsed;
         }
@@ -127,7 +129,12 @@ namespace WpfApp_MetalBands {
         }
 
         private void miUpdMusician_Click(object sender, RoutedEventArgs e) {
+            hideAllGrids();
 
+            var result = context.enMusicians.ToList();
+
+            dgMusicianEdit.Visibility = Visibility.Visible;
+            dgMusicianEdit.ItemsSource = result;
         }
 
         private void miUpdtAlbum_Click(object sender, RoutedEventArgs e) {
@@ -193,205 +200,267 @@ namespace WpfApp_MetalBands {
         }
 
         private void btSaveBand_Click(object sender, RoutedEventArgs e) {
+            try {
+                if (tbBandName.Text.Length == 0) {
+                    MessageBox.Show("Enter a band name.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                var res = int.TryParse(tbYoF.Text, out int yr);
+
+                if (!res || (res && (yr < 1950 || yr > DateTime.Today.Year))) {
+                    MessageBox.Show("Provide a valid date - it should be between 1950 and " + DateTime.Today.Year,
+                        "Invalid entry", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                if (cbBandName.SelectedItem is not enMetalBand mb) {
+                    return;
+                } else {
+                    mb.Band_name = tbBandName.Text;
+                    mb.Date_founding = yr;
+                    var gid = context.enGenres.Where(x => x.Genre_name == cbGenre.Text).Select(x => x.Genre_id).ToList();
+                    mb.Genre_id = gid[0];
+
+                    context.enMetalBands.Update(mb);
+                    context.SaveChanges();
+                    MessageBox.Show("Changes saved", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception err) {
+
+                MessageBox.Show("Error in the code: " + err.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             
-            if (tbBandName.Text.Length == 0) {
-                MessageBox.Show("Enter a band name.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            var res = int.TryParse(tbYoF.Text, out int yr);
-
-            if (!res || (res && (yr < 1950 || yr > DateTime.Today.Year))) {
-                MessageBox.Show("Provide a valid date - it should be between 1950 and " + DateTime.Today.Year, 
-                    "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            if (cbBandName.SelectedItem is not enMetalBand mb) {
-                return;
-            } else {
-                mb.Band_name = tbBandName.Text;
-                mb.Date_founding = yr;
-                var gid = context.enGenres.Where(x => x.Genre_name == cbGenre.Text).Select(x => x.Genre_id).ToList();
-                mb.Genre_id = gid[0];
-
-                context.enMetalBands.Update(mb);
-                context.SaveChanges();
-                MessageBox.Show("Changes saved", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            }  
         }
 
         private void btSaveAsNewBand_Click(object sender, RoutedEventArgs e) {
-            if (tbBandName.Text.Length == 0) {
-                MessageBox.Show("Enter a band name.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            } else {
-                var id = (from x in context.enMetalBands
-                          where x.Band_name == tbBandName.Text
-                          select x).FirstOrDefault();
-                if (id != null) {
-                    MessageBox.Show("There is already a band with this name.\n" +
-                        "If you wish to update it, press \"Save\" instead of \"Save As New\", " +
-                        "otherwise provide a different band name", 
-                        "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            try {
+                if (tbBandName.Text.Length == 0) {
+                    MessageBox.Show("Enter a band name.", "Missing entry", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                } else {
+                    var id = (from x in context.enMetalBands
+                              where x.Band_name == tbBandName.Text
+                              select x).FirstOrDefault();
+                    if (id != null) {
+                        MessageBox.Show("There is already a band with this name.\n" +
+                            "If you wish to update it, press \"Save\" instead of \"Save As New\", " +
+                            "otherwise provide a different band name",
+                            "ERROR", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                }
+
+                var res = int.TryParse(tbYoF.Text, out int yr);
+
+                if (!res || (res && (yr < 1950 || yr > DateTime.Today.Year))) {
+                    MessageBox.Show("Provide a valid date - it should be between 1950 and " + DateTime.Today.Year,
+                        "Invalid entry", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
+
+                var gid = context.enGenres.Where(x => x.Genre_name == cbGenre.Text).Select(x => x.Genre_id).ToList();
+
+                var new_band = new enMetalBand {
+                    Band_name = tbBandName.Text,
+                    Genre_id = gid[0],
+                    Date_founding = yr
+                };
+
+                context.enMetalBands.Add(new_band);
+                context.SaveChanges();
+                MessageBox.Show("Band saved", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                miListBands_Click(sender, e);
             }
+            catch (Exception err) {
 
-            var res = int.TryParse(tbYoF.Text, out int yr);
-
-            if (!res || (res && (yr < 1950 || yr > DateTime.Today.Year))) {
-                MessageBox.Show("Provide a valid date - it should be between 1950 and " + DateTime.Today.Year,
-                    "Invalid entry", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                MessageBox.Show("Error in the code: " + err.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
-            var gid = context.enGenres.Where(x => x.Genre_name == cbGenre.Text).Select(x => x.Genre_id).ToList();
-
-            var new_band = new enMetalBand {
-                Band_name = tbBandName.Text,
-                Genre_id = gid[0],
-                Date_founding = yr
-            };
-
-            context.enMetalBands.Add(new_band);
-            context.SaveChanges();
-            MessageBox.Show("Band saved", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            miListBands_Click(sender, e);
         }
 
         private void btDeleteBand_Click(object sender, RoutedEventArgs e) {
-            if (cbBandName.SelectedItem is not enMetalBand mb) {
-                MessageBox.Show("No such band in the database as " + cbBandName.Text,
-                    "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                return;
-            } else {
-                MessageBoxResult mbres = MessageBox.Show("Are you sure you wish to delete the following band and all their albums?\n" +
-                mb.Band_name + " (" + mb.NoOfAlbums + " albums)",
-                "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (mbres == MessageBoxResult.Yes) {
-                    context.enMetalBands.Remove(mb);
-                    context.SaveChanges();
-                    MessageBox.Show("The band and all their albums have been deleted", 
-                        "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    miListBands_Click(sender, e);
+            try {
+                if (cbBandName.SelectedItem is not enMetalBand mb) {
+                    MessageBox.Show("No such band in the database as " + cbBandName.Text,
+                        "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    return;
+                } else {
+                    MessageBoxResult mbres = MessageBox.Show("Are you sure you wish to delete the following band and all their albums?\n" +
+                    mb.Band_name + " (" + mb.NoOfAlbums + " albums)",
+                    "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (mbres == MessageBoxResult.Yes) {
+                        context.enMetalBands.Remove(mb);
+                        context.SaveChanges();
+                        MessageBox.Show("The band and all their albums have been deleted",
+                            "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        miListBands_Click(sender, e);
+                    }
                 }
             }
+            catch (Exception err) {
+
+                MessageBox.Show("Error in the code: " + err.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
         }
 
         private void btSaveAlbum_Click(object sender, RoutedEventArgs e) {
-            if (tbAlbumTitle.Text.Length == 0) {
-                MessageBox.Show("Enter an album title.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+            try {
+                if (tbAlbumTitle.Text.Length == 0) {
+                    MessageBox.Show("Enter an album title.", "Missing entry", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                var res_yr = int.TryParse(tbRelYear.Text, out int yr);
+
+                if (!res_yr || (res_yr && (yr < 1950 || yr > DateTime.Today.Year + 1))) {
+                    MessageBox.Show("Provide a valid date - it should be between 1950 and " + DateTime.Today.Year + 1,
+                        "Invalid entry", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                var res_rating = int.TryParse(tbRating.Text, out int rating);
+
+                if (!res_rating || (res_rating && (rating < 1 || rating > 10))) {
+                    MessageBox.Show("Provide a valid rating - between 1.0 and 10.0",
+                        "Invalid entry", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                var band_id = context.enMetalBands.Where(x => x.Band_name == cbAlbumArtist.Text).Select(x => x.Band_id).FirstOrDefault();
+                enAlbum album = (from x in context.enAlbums where x.Album_title == cbAlbumTitle.Text && x.Band_id == band_id select x).First();
+                //enAlbum album = context.enAlbums.Where(x => x.Album_id == band_id).Where(x => x.Album_title == cbAlbumTitle.Text).Select(x => x).First();
+
+                if (album is null) {
+                    return;
+                } else {
+                    var new_band_id = context.enMetalBands.Where(x => x.Band_name == tbArtist.Text).Select(x => x.Band_id).FirstOrDefault();
+                    album.Album_title = tbAlbumTitle.Text;
+                    album.Release_Year = yr;
+                    album.Album_rating = rating;
+                    album.Band_id = band_id;
+
+                    context.enAlbums.Update(album);
+                    context.SaveChanges();
+                    MessageBox.Show("Changes saved", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
             }
+            catch (Exception err) {
 
-            var res_yr = int.TryParse(tbRelYear.Text, out int yr);
-
-            if (!res_yr || (res_yr && (yr < 1950 || yr > DateTime.Today.Year + 1))) {
-                MessageBox.Show("Provide a valid date - it should be between 1950 and " + DateTime.Today.Year + 1,
-                    "Invalid entry", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            var res_rating = int.TryParse(tbRating.Text, out int rating);
-
-            if (!res_rating || (res_rating && (rating < 1 || rating > 10))) {
-                MessageBox.Show("Provide a valid rating - between 1.0 and 10.0",
-                    "Invalid entry", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            var band_id = context.enMetalBands.Where(x => x.Band_name == cbAlbumArtist.Text).Select(x => x.Band_id).FirstOrDefault();
-            enAlbum album = (from x in context.enAlbums where x.Album_title == cbAlbumTitle.Text && x.Band_id == band_id select x).First();
-            //enAlbum album = context.enAlbums.Where(x => x.Album_id == band_id).Where(x => x.Album_title == cbAlbumTitle.Text).Select(x => x).First();
-
-            if (album is null) {
-                return;
-            } else {
-                var new_band_id = context.enMetalBands.Where(x => x.Band_name == tbArtist.Text).Select(x => x.Band_id).FirstOrDefault();
-                album.Album_title = tbAlbumTitle.Text;
-                album.Release_Year = yr;
-                album.Album_rating = rating;
-                album.Band_id = band_id;
-
-                context.enAlbums.Update(album);
-                context.SaveChanges();
-                MessageBox.Show("Changes saved", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Error in the code: " + err.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private void btSaveAsNewAlbum_Click(object sender, RoutedEventArgs e) {
-            if (tbAlbumTitle.Text.Length == 0) {
-                MessageBox.Show("Enter an album title.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            } else {
-                var id = (from x in context.enAlbums join y in context.enMetalBands
-                          on x.Band_id equals y.Band_id
-                          where x.Album_title == tbAlbumTitle.Text
-                          select x).FirstOrDefault();
-                if (id != null) {
-                    MessageBox.Show("This band already has an album with this title.\n" +
-                        "If you wish to update it, press \"Save\" instead of \"Save As New\", " +
-                        "otherwise provide a different album title",
-                        "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            try {
+                if (tbAlbumTitle.Text.Length == 0) {
+                    MessageBox.Show("Enter an album title.", "Missing entry", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                } else {
+                    var id = (from x in context.enAlbums
+                              join y in context.enMetalBands on x.Band_id equals y.Band_id
+                              where x.Album_title == tbAlbumTitle.Text
+                              select x).FirstOrDefault();
+                    if (id != null) {
+                        MessageBox.Show("This band already has an album with this title.\n" +
+                            "If you wish to update it, press \"Save\" instead of \"Save As New\", " +
+                            "otherwise provide a different album title",
+                            "Invalid entry", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                }
+
+                var res_yr = int.TryParse(tbRelYear.Text, out int yr);
+
+                if (!res_yr || (res_yr && (yr < 1950 || yr > DateTime.Today.Year + 1))) {
+                    MessageBox.Show("Provide a valid date - it should be between 1950 and " + DateTime.Today.Year + 1,
+                        "Invalid entry", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
-            }
 
-            var res_yr = int.TryParse(tbRelYear.Text, out int yr);
+                var res_rating = int.TryParse(tbRating.Text, out int rating);
 
-            if (!res_yr || (res_yr && (yr < 1950 || yr > DateTime.Today.Year + 1))) {
-                MessageBox.Show("Provide a valid date - it should be between 1950 and " + DateTime.Today.Year + 1,
-                    "Invalid entry", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+                if (!res_rating || (res_rating && (rating < 1 || rating > 10))) {
+                    MessageBox.Show("Provide a valid rating - a whole number between 1 and 10",
+                        "Invalid entry", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
-            var res_rating = int.TryParse(tbRating.Text, out int rating);
+                var band_id = context.enMetalBands.Where(x => x.Band_name == tbArtist.Text).Select(x => x.Band_id).FirstOrDefault();
 
-            if (!res_rating || (res_rating && (rating < 1 || rating > 10))) {
-                MessageBox.Show("Provide a valid rating - between 1.0 and 10.0",
-                    "Invalid entry", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+                if (band_id > 0) {
+                    var new_album = new enAlbum {
+                        Album_title = tbAlbumTitle.Text,
+                        Band_id = band_id,
+                        Release_Year = yr,
+                        Album_rating = rating
+                    };
 
-            var band_id = context.enMetalBands.Where(x => x.Band_name == tbArtist.Text).Select(x => x.Band_id).FirstOrDefault();
-
-            if (band_id > 0) {
-                var new_album = new enAlbum {
-                    Album_title = tbAlbumTitle.Text,
-                    Band_id = band_id,
-                    Release_Year = yr,
-                    Album_rating = rating
-                };
-
-                context.enAlbums.Add(new_album);
-                context.SaveChanges();
-                MessageBox.Show("Album saved", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                miListAlbums_Click(sender, e);
-            }
-            
-        }
-
-        private void btDeleteAlbum_Click(object sender, RoutedEventArgs e) {
-            var band_id = context.enMetalBands.Where(x => x.Band_name == cbAlbumArtist.Text).Select(x => x.Band_id).FirstOrDefault();
-            enAlbum album = (from x in context.enAlbums where x.Album_title == cbAlbumTitle.Text && x.Band_id == band_id select x).First();
-            if (album is null) {
-                MessageBox.Show("No such album in the database as " + cbAlbumTitle.Text,
-                    "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                return;
-            } else {
-                MessageBoxResult mares = MessageBox.Show("Are you sure you wish to delete the following album?\n" +
-                    album.Album_title + " (" + album.Release_Year + " by " + album.ArtistName + ")",
-                    "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (mares == MessageBoxResult.Yes) {
-                    context.enAlbums.Remove(album);
+                    context.enAlbums.Add(new_album);
                     context.SaveChanges();
-                    MessageBox.Show("Album successfully deleted", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Album saved", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     miListAlbums_Click(sender, e);
                 }
             }
+            catch (Exception err) {
+
+                MessageBox.Show("Error in the code: " + err.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
+        private void btDeleteAlbum_Click(object sender, RoutedEventArgs e) {
+            try {
+                var band_id = context.enMetalBands.Where(x => x.Band_name == cbAlbumArtist.Text).Select(x => x.Band_id).FirstOrDefault();
+                enAlbum album = (from x in context.enAlbums where x.Album_title == cbAlbumTitle.Text && x.Band_id == band_id select x).First();
+                if (album is null) {
+                    MessageBox.Show("No such album in the database as " + cbAlbumTitle.Text,
+                        "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                } else {
+                    MessageBoxResult mares = MessageBox.Show("Are you sure you wish to delete the following album?\n" +
+                        album.Album_title + " (" + album.Release_Year + " by " + album.ArtistName + ")",
+                        "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (mares == MessageBoxResult.Yes) {
+                        context.enAlbums.Remove(album);
+                        context.SaveChanges();
+                        MessageBox.Show("Album successfully deleted", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        miListAlbums_Click(sender, e);
+                    }
+                }
+            }
+            catch (Exception err) {
 
+                MessageBox.Show("Error in the code: " + err.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void dgMusicianEdit_BeginningEdit(object sender, DataGridBeginningEditEventArgs e) {
+            try {
+
+            }
+            catch (Exception err) {
+
+                MessageBox.Show("Error in the code: " + err.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void dgMusicianEdit_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e) {
+ 
+        }
+
+        private void dgMusicianEdit_CurrentCellChanged(object sender, EventArgs e) {
+            
+        }
+
+        private void dgMusicianEdit_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e) {
+            try {
+                
+            }
+            catch (Exception err) {
+
+                MessageBox.Show("Error in the code: " + err.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }
