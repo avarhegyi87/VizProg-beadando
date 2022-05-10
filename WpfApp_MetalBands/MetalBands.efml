@@ -24,8 +24,8 @@
     <property name="Release_Year" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="38d13a16-5eca-4ffb-8f9c-d4bee9bf0cdd">
       <column name="release_year" length="4" />
     </property>
-    <property name="Album_rating" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="07c4111d-8cf8-4e1d-8232-80e7de336d22">
-      <column name="album_rating" precision="2" scale="1" />
+    <property name="Album_rating" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="07c4111d-8cf8-4e1d-8232-80e7de336d22">
+      <column name="album_rating" />
     </property>
     <property name="Album_title" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="9cab2fb5-87e8-489b-9980-1067ee05cbf9">
       <column name="album_title" length="50" />
@@ -62,7 +62,7 @@
     </property>
   </class>
   <associations>
-    <association name="enMetalBand_enAlbum" cardinality="OneToMany" p1:Guid="95acd883-1952-4df9-9962-40e91a9c8a9a">
+    <association name="enMetalBand_enAlbum" cardinality="OneToMany" on-delete="Cascade" p1:Guid="95acd883-1952-4df9-9962-40e91a9c8a9a">
       <end1 multiplicity="One" name="MetalBand" class="enAlbum" relation-class="enMetalBand" constrained="True" lazy="False" p1:Guid="e6b3bac9-8fee-404a-9704-1eebdceea33d">
         <property name="Band_id" />
       </end1>

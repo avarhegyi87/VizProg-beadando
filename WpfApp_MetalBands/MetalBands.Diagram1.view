@@ -558,7 +558,7 @@
             <BendPoints>
               <PointD>
                 <X>434 px</X>
-                <Y>303.079545454545 px</Y>
+                <Y>303.079545454546 px</Y>
               </PointD>
               <PointD>
                 <X>434 px</X>
@@ -807,10 +807,6 @@
                       <Parent>43</Parent>
                     </CustomProperties>
                     <Children />
-                    <Location>
-                      <X>0 px</X>
-                      <Y>1.4210854715202E-14 px</Y>
-                    </Location>
                     <Size>
                       <Width>144 px</Width>
                       <Height>18 px</Height>
