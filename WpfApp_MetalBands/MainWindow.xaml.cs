@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -43,6 +44,25 @@ namespace enMetalBands {
 }
 
 namespace WpfApp_MetalBands {
+    //class MusicianData {
+    //    public string FirstName { get; set; }
+    //    public string LastName { get; set; }
+    //    public string Bands { get; set; }
+    //}
+
+    //public static class BovitoHelpers {
+    //    public static string OsszesBanda(this enMusician enSzemely) {
+    //        var s = "";
+    //        foreach (var x in enSzemely.MetalBands) {
+    //            s = s + x.Band_name;
+    //            //ha nem az ustolsó elem akkor az s változóhoz hozzáad még egy y karaktert. A Last a collection tipusú adatokon értelmezett művelet mint pl. First, Next stb
+    //            if (x != enSzemely.MetalBands.Last())
+    //                s = s + ", ";
+    //        }
+    //        return s;
+    //    }
+    //}
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -82,6 +102,7 @@ namespace WpfApp_MetalBands {
         }
 
         private void hideAllGrids() {
+            tbarEditing.Visibility = Visibility.Collapsed;
             dgAll.Visibility = Visibility.Collapsed;
             dgBands.Visibility = Visibility.Collapsed;
             dgAlbums.Visibility = Visibility.Collapsed;
@@ -116,9 +137,19 @@ namespace WpfApp_MetalBands {
         private void miListMusicians_Click(object sender, RoutedEventArgs e) {
             hideAllGrids();
 
-            var result = context.enMusicians.Include(x => x.MetalBands).OrderBy(x => x.First_name).ToList();
+            var result = context.enMusicians.Include(x => x.MetalBands).OrderBy(x => x.Last_name).ToList();
 
             dgMusicians.Visibility = Visibility.Visible;
+
+            //var result = new List<MusicianData>();
+            //foreach (var x in context.enMusicians) {
+            //    result.Add(new MusicianData() {
+            //        FirstName = x.First_name,
+            //        LastName = x.Last_name,
+            //        Bands = x.OsszesBanda()
+            //    });
+            //}
+
             dgMusicians.ItemsSource = result;
         }
 
@@ -133,6 +164,7 @@ namespace WpfApp_MetalBands {
 
             var result = context.enMusicians.ToList();
 
+            tbarEditing.Visibility = Visibility.Visible;
             dgMusicianEdit.Visibility = Visibility.Visible;
             dgMusicianEdit.ItemsSource = result;
         }
@@ -174,15 +206,8 @@ namespace WpfApp_MetalBands {
         }
 
         private void cbAlbumTitle_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (blockHandlers) {
-                tbAlbumTitle.Text = "";
-                tbRelYear.Text = "";
-                tbRating.Text = "";
-                return;
-            }
-
             enAlbum album = (from x in context.enAlbums where x.Album_title == ((ComboBox)sender).SelectedItem select x).First();
-            if (album is null) {
+            if (blockHandlers || album is null) {
                 tbAlbumTitle.Text = "";
                 tbRelYear.Text = "";
                 tbRating.Text = "";
@@ -435,31 +460,58 @@ namespace WpfApp_MetalBands {
             }
         }
 
-        private void dgMusicianEdit_BeginningEdit(object sender, DataGridBeginningEditEventArgs e) {
-            try {
+        private void btAddMusician_Click(object sender, RoutedEventArgs e) {
+            var wndMus = new AddOrUpdateMusician();
+            var auth = wndMus.ShowDialog();
+            if (auth == true) {
+                var new_musician = new enMusician {
+                    First_name = wndMus.NewFirstName,
+                    Last_name = wndMus.NewLastName,
+                    Instrument = wndMus.NewInstrument
+                };
 
-            }
-            catch (Exception err) {
-
-                MessageBox.Show("Error in the code: " + err.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                context.enMusicians.Add(new_musician);
+                context.SaveChanges();
+                MessageBox.Show("Musician saved", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                miUpdMusician_Click(sender, e);
             }
         }
 
-        private void dgMusicianEdit_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e) {
- 
-        }
+        private void btUpdateMusician_Click(object sender, RoutedEventArgs e) {
+            enMusician? musician = ((FrameworkElement)sender).DataContext as enMusician;
+            if (musician is not null) {
+                var wndMus = new AddOrUpdateMusician(musician);
+                var auth = wndMus.ShowDialog();
+                if (auth == true) {
+                    musician.First_name = wndMus.NewFirstName;
+                    musician.Last_name = wndMus.NewLastName;
+                    musician.Instrument = wndMus.NewInstrument;
 
-        private void dgMusicianEdit_CurrentCellChanged(object sender, EventArgs e) {
-            
-        }
-
-        private void dgMusicianEdit_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e) {
-            try {
-                
+                    context.SaveChanges();
+                    MessageBox.Show("Musician saved", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    miUpdMusician_Click(sender, e);
+                }
+            } else {
+                MessageBox.Show("Select a row to update then push the \"Update\" button.", "Instructions",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            catch (Exception err) {
+        }
 
-                MessageBox.Show("Error in the code: " + err.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+        private void btDeleteMusician_Click(object sender, RoutedEventArgs e) {
+            enMusician? musician = ((FrameworkElement)sender).DataContext as enMusician;
+            if (musician is not null) {
+                MessageBoxResult mbres = MessageBox.Show("Are you sure you wish to delete this musician from the database?",
+                    "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (mbres == MessageBoxResult.Yes) {
+                    context.enMusicians.Remove(musician);
+                    context.SaveChanges();
+                    MessageBox.Show("The musician has been deleted from the database",
+                        "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    miUpdMusician_Click(sender, e);
+                }
+            } else {
+                MessageBox.Show("Select a row to delete then push the \"Delete\" button.", "Instructions",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
     }

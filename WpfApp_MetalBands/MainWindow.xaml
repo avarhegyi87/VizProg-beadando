@@ -24,16 +24,10 @@
                 <MenuItem Header="Add/Update Album" Name="miUpdtAlbum" Click="miUpdtAlbum_Click"/>
             </MenuItem>
         </Menu>
-        
-        <ToolBar Height="34" DockPanel.Dock="Top">
-            <Button Content="Add band"/>
-            <Button Content="Add album"/>
-            <Button Content="Add band member"/>
-            <Button>
-                <Image Source="/Icons/DeleteTableRow.png"/>
-            </Button>
-            <Button>
-                <Image Source="/Icons/UpdateListItem.png"/>
+
+        <ToolBar x:Name="tbarEditing" Height="34" DockPanel.Dock="Top" Visibility="Visible">
+            <Button x:Name="btAddMusician" Click="btAddMusician_Click">
+                <Image Source="/Icons/AddRow.png"/>
             </Button>
         </ToolBar>
 
@@ -62,7 +56,8 @@
         <DataGrid x:Name="dgMusicians" ItemsSource="{Binding}" Visibility="Collapsed" HorizontalAlignment="Stretch"
                   DockPanel.Dock="Top" IsReadOnly="False" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Musician Name" Binding="{Binding FullName}"/>
+                <DataGridTextColumn Header="Musician First Name" Binding="{Binding First_name}"/>
+                <DataGridTextColumn Header="Musician Last Name" Binding="{Binding Last_name}"/>
                 <DataGridTextColumn Header="Bands" Binding="{Binding PlayingInBands}"/>
                 <DataGridTextColumn Header="Instruments" Binding="{Binding Instrument}"/>
             </DataGrid.Columns>
@@ -77,13 +72,14 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Grid x:Name="grBand" Visibility="Collapsed" Margin="0,10,0,0" DataContext="{Binding}" Loaded="grBand_Loaded">
+        <Grid x:Name="grBand" Visibility="Collapsed" Margin="30,30,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
+              DataContext="{Binding}" Loaded="grBand_Loaded">
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -108,26 +104,27 @@
             <TextBox x:Name="tbYoF" Grid.Row="3" Grid.Column="1" Height="25" Width="50"
                      HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-            <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="17,0,0,0">
+            <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="17,0,0,0">
                 <Button x:Name="btSaveBand" Content="_Save" Margin="0,0,20,0" Width="80" Height="35" Click="btSaveBand_Click"/>
-                <Button x:Name="btSaveAsNewBand" Content="Save As _New" Margin="20,0,20,0" Width="120" Height="35" Click="btSaveAsNewBand_Click"/>
+                <Button x:Name="btSaveAsNewBand" Content="Save As _New" Margin="20,0,20,0" Width="80" Height="35" Click="btSaveAsNewBand_Click"/>
                 <Button x:Name="btDeleteBand" Content="_Delete" Margin="20,0,20,0" Width="80" Height="35" Click="btDeleteBand_Click"/>
                 <Button x:Name="btNoAddBand" Content="_Back" Margin="20,0,0,0" Width="80" Height="35" Click="btBack_Click"/>
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="grAlbum" Visibility="Collapsed" Margin="10,10,10,10" DataContext="{Binding}" Loaded="grAlbum_Loaded">
+        <Grid x:Name="grAlbum" Visibility="Collapsed" Margin="30,30,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
+              DataContext="{Binding}" Loaded="grAlbum_Loaded">
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
 
             <Label Content="Select Artist" Grid.Row="0" Grid.Column="0"/>
@@ -154,22 +151,38 @@
             <TextBox x:Name="tbRating" Grid.Row="3" Grid.Column="1" Height="25" Width="50"
                      HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-            <StackPanel Grid.Row="4" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Left" Margin="17,0,0,0">
+            <StackPanel Grid.Row="4" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="17,0,0,0">
                 <Button x:Name="btSaveAlbum" Content="_Save" Margin="0,0,20,0" Width="80" Height="35" Click="btSaveAlbum_Click"/>
-                <Button x:Name="btSaveAsNewAlbum" Content="Save As _New" Margin="20,0,20,0" Width="120" Height="35" Click="btSaveAsNewAlbum_Click"/>
+                <Button x:Name="btSaveAsNewAlbum" Content="Save As _New" Margin="20,0,20,0" Width="80" Height="35" Click="btSaveAsNewAlbum_Click"/>
                 <Button x:Name="btDeleteAlbum" Content="_Delete" Margin="20,0,20,0" Width="80" Height="35" Click="btDeleteAlbum_Click"/>
                 <Button x:Name="btNoAddAlbum" Content="_Back" Margin="20,0,0,0" Width="80" Height="35" Click="btBack_Click"/>
             </StackPanel>
         </Grid>
 
         <DataGrid x:Name="dgMusicianEdit" ItemsSource="{Binding}" Visibility="Collapsed"
-                  HorizontalAlignment="Stretch" IsReadOnly="False" AutoGenerateColumns="False"
-                  BeginningEdit="dgMusicianEdit_BeginningEdit" CurrentCellChanged="dgMusicianEdit_CurrentCellChanged"
-                  CellEditEnding="dgMusicianEdit_CellEditEnding" RowEditEnding="dgMusicianEdit_RowEditEnding">
+                  HorizontalAlignment="Stretch" IsReadOnly="True" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="First Name" Binding="{Binding First_name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="Last Name" Binding="{Binding Last_name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="Instruments" Binding="{Binding Instrument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="First Name" Binding="{Binding First_name}"/>
+                <DataGridTextColumn Header="Last Name" Binding="{Binding Last_name}"/>
+                <DataGridTextColumn Header="Instruments" Binding="{Binding Instrument}"/>
+                <DataGridTemplateColumn Header="Update">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="btUpdateMusician" Click="btUpdateMusician_Click">
+                                <Image Source="/Icons/UpdateListItem.png"/>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Delete">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="btDeleteMusician" Click="btDeleteMusician_Click">
+                                <Image Source="/Icons/DeleteTableRow.png"/>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

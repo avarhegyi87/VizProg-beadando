@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Icons\AddRow.png" />
     <None Remove="Icons\DeleteTableRow.png" />
     <None Remove="Icons\UpdateListItem.png" />
   </ItemGroup>
@@ -28,6 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Icons\AddRow.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Icons\DeleteTableRow.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

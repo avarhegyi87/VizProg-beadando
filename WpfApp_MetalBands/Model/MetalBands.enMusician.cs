@@ -15,6 +15,7 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Linq.Expressions;
+using enMetalBands;
 
 namespace enMetalBands
 {
@@ -35,6 +36,7 @@ namespace enMetalBands
         public virtual string Instrument { get; set; }
 
         public virtual IList<enMetalBand> MetalBands { get; set; }
+
 
         #region Extensibility Method Definitions
 
