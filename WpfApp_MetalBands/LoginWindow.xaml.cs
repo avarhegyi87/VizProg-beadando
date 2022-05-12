@@ -14,12 +14,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using enMetalBands;
 
 namespace WpfApp_MetalBands {
     /// <summary>
     /// Interaction logic for LoginWindow.xaml
     /// </summary>
     public partial class LoginWindow : Window {
+        cnMetalBands cn;
+
         public LoginWindow() {
             InitializeComponent();
         }
@@ -34,12 +37,31 @@ namespace WpfApp_MetalBands {
             var wndReg = new RegWindow();
             var auth = wndReg.ShowDialog();
             if (auth == true) {
-                //var opt = new HashingOptions();
-                //PasswordHasher hasher = new PasswordHasher();
-                //enUser user = new enUser {
-                //    UserName = wndReg.NewUserName,
-                    
-                //};
+                HashingOptions opt = new HashingOptions();
+                IOptions<HashingOptions> options = Options.Create(opt);
+                PasswordHasher hasher = new PasswordHasher(options);
+
+                string codedPwd = hasher.Hash(wndReg.NewPassword);
+                (bool, bool) checkPwd = hasher.Check(codedPwd, wndReg.NewPassword);
+
+                if (!checkPwd.Item1) {
+                    MessageBox.Show("The encoding of the password was unsuccessful.", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                } else if (checkPwd.Item2) {
+                    MessageBox.Show("The password hashing options need updating", "Warning",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+
+                cn = new cnMetalBands();
+
+                var newUser = new enUser {
+                    UserName = wndReg.NewUserName,
+                    Password = codedPwd
+                };
+                cn.enUsers.Add(newUser);
+                cn.SaveChanges();
+                MessageBox.Show("Registration successful", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
     }
@@ -62,7 +84,7 @@ namespace WpfApp_MetalBands {
             using (var algorithm = new Rfc2898DeriveBytes(
                 password, SALTSIZE, Options.Iterations, HashAlgorithmName.SHA256)) {
                 var key = Convert.ToBase64String(algorithm.GetBytes(KEYSIZE));
-                var salt = Convert.ToBase64String(algorithm.GetBytes(SALTSIZE));
+                var salt = Convert.ToBase64String(algorithm.Salt);
 
                 return $"{Options.Iterations}.{salt}.{key}";
             }
@@ -90,7 +112,6 @@ namespace WpfApp_MetalBands {
 
                     return (verified, needsUpgrade);
                 }
-
             }
         }
     }

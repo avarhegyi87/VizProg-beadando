@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp_MetalBands"
         mc:Ignorable="d"
         Title="Register" Height="250" Width="300"
-        ShowInTaskbar="False" WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="True" WindowStartupLocation="CenterOwner"
         FocusManager.FocusedElement="{Binding ElementName=tbNewUserName}">
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.ColumnDefinitions>

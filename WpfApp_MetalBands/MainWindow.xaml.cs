@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using enMetalBands;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace enMetalBands {
     public partial class enMetalBand {
@@ -76,10 +77,23 @@ namespace WpfApp_MetalBands {
             var wndLogin = new LoginWindow();
             var auth = wndLogin.ShowDialog();
             if (auth == true) {
-                if (wndLogin.UserName == "Adam" && wndLogin.Password == "jelszo") {
-                    context = new cnMetalBands();
-                    return;
+                HashingOptions opt = new HashingOptions();
+                IOptions<HashingOptions> options = Options.Create(opt);
+                PasswordHasher hasher = new PasswordHasher(options);
+
+                context = new cnMetalBands();
+                var userCount = (from x in context.enUsers where x.UserName == wndLogin.UserName select x).ToList();
+                
+                if (userCount.Count > 0) {
+                    enUser user = userCount[0];
+                    (bool, bool) checkPwd = hasher.Check(user.Password, wndLogin.Password);
+
+                    if (checkPwd.Item1) {
+                        return;
+                    }
                 }
+
+                context = null;
                 MessageBox.Show("Wrong login credentials.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Application.Current.Shutdown();
             } else {

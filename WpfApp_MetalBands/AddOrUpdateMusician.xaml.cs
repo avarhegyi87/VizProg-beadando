@@ -20,7 +20,7 @@ namespace WpfApp_MetalBands {
     public partial class AddOrUpdateMusician : Window {
         public AddOrUpdateMusician(cnMetalBands cn, enMetalBands.enMusician musician = null) {
             InitializeComponent();
-            lbBands.ItemsSource = cn.enMetalBands.ToList();
+            lbBands.ItemsSource = cn.enMetalBands.OrderBy(x => x.Band_name).ToList();
             if (musician is not null) {
                 tbMusFirstName.Text = musician.First_name;
                 tbMusLastName.Text = musician.Last_name;
