@@ -165,6 +165,7 @@
                 <DataGridTextColumn Header="First Name" Binding="{Binding First_name}"/>
                 <DataGridTextColumn Header="Last Name" Binding="{Binding Last_name}"/>
                 <DataGridTextColumn Header="Instruments" Binding="{Binding Instrument}"/>
+                <DataGridTextColumn Header="Bands" Binding="{Binding PlayingInBands}"/>
                 <DataGridTemplateColumn Header="Update">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

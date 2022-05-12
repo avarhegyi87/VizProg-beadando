@@ -97,8 +97,7 @@ namespace WpfApp_MetalBands {
         }
 
         private void grAlbum_Loaded(object sender, RoutedEventArgs e) {
-            //var ds = (from x in context.enMetalBands select x.Band_name).ToList();
-            //cbAlbumArtist.ItemsSource = ds;
+
         }
 
         private void hideAllGrids() {
@@ -172,8 +171,9 @@ namespace WpfApp_MetalBands {
         private void miUpdtAlbum_Click(object sender, RoutedEventArgs e) {
             hideAllGrids();
             grAlbum.Visibility = Visibility.Visible;
-            //grAlbum.DataContext = context.enAlbums.Include(x => x.MetalBand).ToList();
             grAlbum.DataContext = context.enMetalBands.Include(x => x.Albums).ToList();
+            tbRelYear.Text = "";
+            tbRating.Text = "";
         }
 
         private void btBack_Click(object sender, RoutedEventArgs e) {
@@ -181,15 +181,15 @@ namespace WpfApp_MetalBands {
         }
 
         private void cbBandName_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            var band = ((ComboBox)sender).SelectedItem as enMetalBand;
-            tbBandName.Text = band.Band_name;
-            if (band.GenreName is null) {
-                var gn = (from x in context.enGenres where x.Genre_id == band.Genre_id select x.Genre_name).ToList();
-                cbGenre.SelectedItem = gn[0];
+            var metalBand = ((ComboBox)sender).SelectedItem as enMetalBand;
+            tbBandName.Text = metalBand.Band_name;
+            if (metalBand.GenreName is null) {
+                var genreName = (from x in context.enGenres where x.Genre_id == metalBand.Genre_id select x.Genre_name).ToList();
+                cbGenre.SelectedItem = genreName[0];
             } else {
-                cbGenre.SelectedItem = band.GenreName;
+                cbGenre.SelectedItem = metalBand.GenreName;
             }
-            tbYoF.Text = band.Date_founding.ToString();
+            tbYoF.Text = metalBand.Date_founding.ToString();
         }
 
         private void cbAlbumArtist_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -214,10 +214,8 @@ namespace WpfApp_MetalBands {
             } else {
                 tbAlbumTitle.Text = album.Album_title;
                 if (album.ArtistName is null) {
-                    var an = (from x in context.enMetalBands where x.Band_id == album.Band_id select x.Band_id).ToList();
-                    cbAlbumTitle.SelectedItem = an[0];
-                } else {
-                    //cbAlbumArtist.SelectedItem = album.ArtistName;
+                    var artistName = (from x in context.enMetalBands where x.Band_id == album.Band_id select x.Band_id).ToList();
+                    cbAlbumTitle.SelectedItem = artistName[0];
                 }
                 tbRelYear.Text = album.Release_Year.ToString();
                 tbRating.Text = album.Album_rating.ToString();
@@ -239,15 +237,15 @@ namespace WpfApp_MetalBands {
                     return;
                 }
 
-                if (cbBandName.SelectedItem is not enMetalBand mb) {
+                if (cbBandName.SelectedItem is not enMetalBand metalBand) {
                     return;
                 } else {
-                    mb.Band_name = tbBandName.Text;
-                    mb.Date_founding = yr;
-                    var gid = context.enGenres.Where(x => x.Genre_name == cbGenre.Text).Select(x => x.Genre_id).ToList();
-                    mb.Genre_id = gid[0];
+                    metalBand.Band_name = tbBandName.Text;
+                    metalBand.Date_founding = yr;
+                    var genreId = context.enGenres.Where(x => x.Genre_name == cbGenre.Text).Select(x => x.Genre_id).ToList();
+                    metalBand.Genre_id = genreId[0];
 
-                    context.enMetalBands.Update(mb);
+                    context.enMetalBands.Update(metalBand);
                     context.SaveChanges();
                     MessageBox.Show("Changes saved", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
@@ -285,17 +283,17 @@ namespace WpfApp_MetalBands {
                     return;
                 }
 
-                var gid = context.enGenres.Where(x => x.Genre_name == cbGenre.Text).Select(x => x.Genre_id).ToList();
+                var genreId = context.enGenres.Where(x => x.Genre_name == cbGenre.Text).Select(x => x.Genre_id).ToList();
 
-                var new_band = new enMetalBand {
+                var newBand = new enMetalBand {
                     Band_name = tbBandName.Text,
-                    Genre_id = gid[0],
+                    Genre_id = genreId[0],
                     Date_founding = yr
                 };
 
-                context.enMetalBands.Add(new_band);
+                context.enMetalBands.Add(newBand);
                 context.SaveChanges();
-                MessageBox.Show("Band saved", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Band saved" + newBand.Band_name, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 miListBands_Click(sender, e);
             }
             catch (Exception err) {
@@ -306,16 +304,16 @@ namespace WpfApp_MetalBands {
 
         private void btDeleteBand_Click(object sender, RoutedEventArgs e) {
             try {
-                if (cbBandName.SelectedItem is not enMetalBand mb) {
+                if (cbBandName.SelectedItem is not enMetalBand metalBand) {
                     MessageBox.Show("No such band in the database as " + cbBandName.Text,
                         "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     return;
                 } else {
-                    MessageBoxResult mbres = MessageBox.Show("Are you sure you wish to delete the following band and all their albums?\n" +
-                    mb.Band_name + " (" + mb.NoOfAlbums + " albums)",
+                    MessageBoxResult bandRes = MessageBox.Show("Are you sure you wish to delete the following band and all their albums?\n" +
+                    metalBand.Band_name + " (" + metalBand.NoOfAlbums + " albums)",
                     "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (mbres == MessageBoxResult.Yes) {
-                        context.enMetalBands.Remove(mb);
+                    if (bandRes == MessageBoxResult.Yes) {
+                        context.enMetalBands.Remove(metalBand);
                         context.SaveChanges();
                         MessageBox.Show("The band and all their albums have been deleted",
                             "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -353,9 +351,8 @@ namespace WpfApp_MetalBands {
                     return;
                 }
 
-                var band_id = context.enMetalBands.Where(x => x.Band_name == cbAlbumArtist.Text).Select(x => x.Band_id).FirstOrDefault();
-                enAlbum album = (from x in context.enAlbums where x.Album_title == cbAlbumTitle.Text && x.Band_id == band_id select x).First();
-                //enAlbum album = context.enAlbums.Where(x => x.Album_id == band_id).Where(x => x.Album_title == cbAlbumTitle.Text).Select(x => x).First();
+                var bandId = context.enMetalBands.Where(x => x.Band_name == cbAlbumArtist.Text).Select(x => x.Band_id).FirstOrDefault();
+                enAlbum album = (from x in context.enAlbums where x.Album_title == cbAlbumTitle.Text && x.Band_id == bandId select x).First();
 
                 if (album is null) {
                     return;
@@ -364,7 +361,7 @@ namespace WpfApp_MetalBands {
                     album.Album_title = tbAlbumTitle.Text;
                     album.Release_Year = yr;
                     album.Album_rating = rating;
-                    album.Band_id = band_id;
+                    album.Band_id = bandId;
 
                     context.enAlbums.Update(album);
                     context.SaveChanges();
@@ -412,19 +409,19 @@ namespace WpfApp_MetalBands {
                     return;
                 }
 
-                var band_id = context.enMetalBands.Where(x => x.Band_name == tbArtist.Text).Select(x => x.Band_id).FirstOrDefault();
+                var bandId = context.enMetalBands.Where(x => x.Band_name == tbArtist.Text).Select(x => x.Band_id).FirstOrDefault();
 
-                if (band_id > 0) {
-                    var new_album = new enAlbum {
+                if (bandId > 0) {
+                    var newAlbum = new enAlbum {
                         Album_title = tbAlbumTitle.Text,
-                        Band_id = band_id,
+                        Band_id = bandId,
                         Release_Year = yr,
                         Album_rating = rating
                     };
 
-                    context.enAlbums.Add(new_album);
+                    context.enAlbums.Add(newAlbum);
                     context.SaveChanges();
-                    MessageBox.Show("Album saved", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Album saved: " + newAlbum.Album_title, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     miListAlbums_Click(sender, e);
                 }
             }
@@ -436,17 +433,17 @@ namespace WpfApp_MetalBands {
 
         private void btDeleteAlbum_Click(object sender, RoutedEventArgs e) {
             try {
-                var band_id = context.enMetalBands.Where(x => x.Band_name == cbAlbumArtist.Text).Select(x => x.Band_id).FirstOrDefault();
-                enAlbum album = (from x in context.enAlbums where x.Album_title == cbAlbumTitle.Text && x.Band_id == band_id select x).First();
+                var bandId = context.enMetalBands.Where(x => x.Band_name == cbAlbumArtist.Text).Select(x => x.Band_id).FirstOrDefault();
+                enAlbum album = (from x in context.enAlbums where x.Album_title == cbAlbumTitle.Text && x.Band_id == bandId select x).First();
                 if (album is null) {
                     MessageBox.Show("No such album in the database as " + cbAlbumTitle.Text,
                         "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 } else {
-                    MessageBoxResult mares = MessageBox.Show("Are you sure you wish to delete the following album?\n" +
+                    MessageBoxResult albumRes = MessageBox.Show("Are you sure you wish to delete the following album?\n" +
                         album.Album_title + " (" + album.Release_Year + " by " + album.ArtistName + ")",
                         "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (mares == MessageBoxResult.Yes) {
+                    if (albumRes == MessageBoxResult.Yes) {
                         context.enAlbums.Remove(album);
                         context.SaveChanges();
                         MessageBox.Show("Album successfully deleted", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -461,18 +458,27 @@ namespace WpfApp_MetalBands {
         }
 
         private void btAddMusician_Click(object sender, RoutedEventArgs e) {
-            var wndMus = new AddOrUpdateMusician();
-            var auth = wndMus.ShowDialog();
-            if (auth == true) {
-                var new_musician = new enMusician {
+            var wndMus = new AddOrUpdateMusician(context);
+            var wndOk = wndMus.ShowDialog();
+            if (wndOk == true) {
+                var newMusician = new enMusician {
                     First_name = wndMus.NewFirstName,
                     Last_name = wndMus.NewLastName,
                     Instrument = wndMus.NewInstrument
                 };
 
-                context.enMusicians.Add(new_musician);
+                context.enMusicians.Add(newMusician);
+                MessageBox.Show("Added musician: " + newMusician.FullName, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                newMusician.MetalBands = new List<enMetalBand>();
+                
+                foreach (enMetalBand band in wndMus.SelBands) {
+                    newMusician.MetalBands.Add(band);
+                    context.SaveChanges();
+                    MessageBox.Show(newMusician.FullName + " added to " + band.Band_name + " as a band member",
+                        "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
                 context.SaveChanges();
-                MessageBox.Show("Musician saved", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 miUpdMusician_Click(sender, e);
             }
         }
@@ -480,12 +486,24 @@ namespace WpfApp_MetalBands {
         private void btUpdateMusician_Click(object sender, RoutedEventArgs e) {
             enMusician? musician = ((FrameworkElement)sender).DataContext as enMusician;
             if (musician is not null) {
-                var wndMus = new AddOrUpdateMusician(musician);
-                var auth = wndMus.ShowDialog();
-                if (auth == true) {
+                var wndMus = new AddOrUpdateMusician(context, musician);
+                var wndOk = wndMus.ShowDialog();
+                if (wndOk == true) {
                     musician.First_name = wndMus.NewFirstName;
                     musician.Last_name = wndMus.NewLastName;
                     musician.Instrument = wndMus.NewInstrument;
+
+                    foreach (enMetalBand band in wndMus.SelBands) {
+                        if (!musician.MetalBands.Contains(band)) {
+                            musician.MetalBands.Add(band);
+                        }
+                    }
+                    for (int i = 0; i < musician.MetalBands.Count; i++) {
+                        if (!wndMus.SelBands.Contains(musician.MetalBands[i])) {
+                            musician.MetalBands.RemoveAt(i);
+                            i--;
+                        }
+                    }
 
                     context.SaveChanges();
                     MessageBox.Show("Musician saved", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -500,9 +518,9 @@ namespace WpfApp_MetalBands {
         private void btDeleteMusician_Click(object sender, RoutedEventArgs e) {
             enMusician? musician = ((FrameworkElement)sender).DataContext as enMusician;
             if (musician is not null) {
-                MessageBoxResult mbres = MessageBox.Show("Are you sure you wish to delete this musician from the database?",
+                MessageBoxResult mbRes = MessageBox.Show("Are you sure you wish to delete this musician from the database?",
                     "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (mbres == MessageBoxResult.Yes) {
+                if (mbRes == MessageBoxResult.Yes) {
                     context.enMusicians.Remove(musician);
                     context.SaveChanges();
                     MessageBox.Show("The musician has been deleted from the database",

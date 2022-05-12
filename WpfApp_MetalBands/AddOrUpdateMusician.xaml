@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp_MetalBands"
         mc:Ignorable="d"
-        Title="Add/Update Musician" Height="250" Width="450"
-        ShowInTaskbar="False" WindowStartupLocation="CenterOwner">
+        Title="Add/Update Musician" Height="400" Width="450"
+        ShowInTaskbar="True" WindowStartupLocation="CenterOwner"
+        FocusManager.FocusedElement="{Binding ElementName=tbMusFirstName}">
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="120"/>
@@ -16,16 +17,32 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
+            <RowDefinition Height="150"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
         <Label Target="{Binding ElementName=tbMusFirstName}" VerticalAlignment="Center" FontSize="12" Grid.Row="0" Grid.Column="0" Content="First Name"/>
         <TextBox x:Name="tbMusFirstName" Grid.Row="0" Grid.Column="1" Height="30" Width="240" VerticalContentAlignment="Center"/>
+        
         <Label Target="{Binding ElementName=tbMusLastName}" VerticalAlignment="Center" FontSize="12" Grid.Row="1" Grid.Column="0" Content="Last Name"/>
         <TextBox x:Name="tbMusLastName" Grid.Row="1" Grid.Column="1" Height="30" Width="240" VerticalContentAlignment="Center"/>
+        
         <Label Target="{Binding ElementName=tbMusInstruments}" VerticalAlignment="Center" FontSize="12" Grid.Row="2" Grid.Column="0" Content="Instruments"/>
         <TextBox x:Name="tbMusInstruments" Grid.Row="2" Grid.Column="1" Height="30" Width="240" VerticalContentAlignment="Center"/>
-        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">
+
+        <Label Target="{Binding ElementName=lbBands}" VerticalAlignment="Center" FontSize="12" Grid.Row="3" Grid.Column="0" Content="Plays in bands:"/>
+        <ListBox x:Name="lbBands" Grid.Row="3" Grid.Column="1" Width="240" Height="140" HorizontalAlignment="Stretch"
+                 SelectionMode="Multiple">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,2">
+                        <TextBlock Text="{Binding Band_name}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+        <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">
             <Button x:Name="btMusOK" VerticalAlignment="Center" Width="60" Content="_OK" IsDefault="True" Click="btMusOK_Click"/>
             <Button x:Name="btMusCancel" Margin="20,0,0,0" VerticalAlignment="Center" Width="60" Content="_Cancel" IsCancel="True"/>
         </StackPanel>
