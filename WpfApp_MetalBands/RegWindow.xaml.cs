@@ -20,11 +20,13 @@ namespace WpfApp_MetalBands {
         public RegWindow() {
             InitializeComponent();
         }
+        // public properties to be accessed by the LoginWindow
         public string NewUserName => tbNewUserName.Text;
         public string NewPassword => pbNewPassword.Password;
         public string ConfirmedPassword => pbConfirmPassword.Password;
 
         private void btSendReg_Click(object sender, RoutedEventArgs e) {
+            // check if the pasword and the confirmed password are matching.
             if (NewPassword != ConfirmedPassword) {
                 MessageBox.Show("The confirmed password is different from the password!",
                     "INVALID ENTRY", MessageBoxButton.OK, MessageBoxImage.Warning);
