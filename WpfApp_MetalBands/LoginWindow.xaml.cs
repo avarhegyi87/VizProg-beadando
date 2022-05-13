@@ -44,6 +44,7 @@ namespace WpfApp_MetalBands {
             var wndReg = new RegWindow();
             var auth = wndReg.ShowDialog();
             if (auth == true) {
+                cn = new cnMetalBands();
                 // take the username from the Login window, and see if there is any user with this name
                 var userCount = (from x in cn.enUsers where x.UserName == wndReg.NewUserName select x).ToList();
 
